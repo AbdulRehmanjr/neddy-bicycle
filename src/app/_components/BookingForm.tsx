@@ -28,8 +28,8 @@ export const BookingForm = () => {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(formSubmitted)} className={`grid grid-cols-2 gap-3 font-bold`}>
-                <h1 className="col-span-2 text-4xl font-extrabold">Personal Information</h1>
+            <form onSubmit={form.handleSubmit(formSubmitted)} className={`grid grid-cols-2 gap-3 font-bold text-mid-blue `}>
+                <h1 className="col-span-2 text-4xl font-libre font-extrabold text-yellow">Personal Information</h1>
                 <FormField
                     control={form.control}
                     name="firstName"
@@ -95,7 +95,7 @@ export const BookingForm = () => {
                     )}
                 />
                 <div className="col-span-2 flex justify-center">
-                    <Button type="submit">
+                    <Button type="submit" className="bg-yellow hover:bg-yellow">
                         Continue
                     </Button>
                 </div>

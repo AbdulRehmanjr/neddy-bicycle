@@ -5,9 +5,9 @@
 export const AmountDetail = () => {
 
     return (
-        <div className="flex flex-col gap-4">
-            <h1 className="text-4xl font-extrabold">Rental overview</h1>
-            <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4 text-yellow">
+            <h1 className="text-4xl font-extrabold font-libre">Rental overview</h1>
+            <div className="flex flex-col gap-2 text-mid-blue">
                 <p className="flex gap-2">
                     <span className="font-extrabold">Start date:</span>
                     <span>2024-05-19</span>
