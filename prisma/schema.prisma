@@ -1,0 +1,146 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  accountId String @id
+  email     String @unique
+  password  String
+  role      Role   @default(ADMIN)
+}
+
+model AccoBooking {
+  accoBookingId      String             @id
+  name               String
+  surname            String
+  email              String
+  phone              String
+  guesthouse         String
+  children           Int
+  adults             Int
+  babies             Int
+  price              String
+  payPalBoookingId   String
+  room               String             @default("")
+  isRefunded         Boolean            @default(false)
+  endDate            String             @default("")
+  startDate          String             @default("")
+  PayPalBoookingInfo PayPalBoookingInfo @relation(fields: [payPalBoookingId], references: [paypalBoookingId], onDelete: Cascade)
+}
+
+model Bicycle {
+  bicycleId          String               @id
+  name               String
+  code               String               @unique
+  image              String
+  description        String
+  price              String
+  active             Boolean              @default(true)
+  size               String[]
+  BicycleBookingItem BicycleBookingItem[]
+}
+
+model BicycleBooking {
+  bicycleBookingId   String               @id
+  pickup             String
+  email              String
+  firstName          String
+  lastName           String
+  phone              String
+  arrivalDate        String
+  arrivalTime        String
+  houseName          String
+  payPalBoookingId   String
+  isRefunded         Boolean              @default(false)
+  price              String               @default("")
+  PayPalBoookingInfo PayPalBoookingInfo   @relation(fields: [payPalBoookingId], references: [paypalBoookingId], onDelete: Cascade)
+  BicycleBookingItem BicycleBookingItem[]
+}
+
+model BicycleBookingItem {
+  bicycleBookingItemId String         @id
+  size                 String
+  startDate            String
+  endDate              String
+  dif                  Int
+  quantity             Int
+  bicycleId            String
+  bicycleBookingId     String
+  BicycleBooking       BicycleBooking @relation(fields: [bicycleBookingId], references: [bicycleBookingId], onDelete: Cascade)
+  Bicycle              Bicycle        @relation(fields: [bicycleId], references: [bicycleId], onDelete: Cascade)
+}
+
+model BoatBooking {
+  boatBookingId      String             @id
+  name               String
+  surname            String
+  email              String
+  phone              String
+  guesthouse         String
+  extra              String
+  information        String
+  children           Int                @default(0)
+  adults             Int                @default(0)
+  babies             Int                @default(0)
+  category           String             @default("")
+  bundle             String             @default("")
+  time               String             @default("")
+  charter            String             @default("")
+  date               String             @default("")
+  price              String             @default("")
+  payPalBoookingId   String
+  isRefunded         Boolean            @default(false)
+  PayPalBoookingInfo PayPalBoookingInfo @relation(fields: [payPalBoookingId], references: [paypalBoookingId], onDelete: Cascade)
+}
+
+model BuggyBooking {
+  buggyBookingId     String             @id
+  date               String
+  name               String
+  surname            String
+  price              String
+  payPalBoookingId   String
+  email              String
+  phone              String
+  isRefunded         Boolean            @default(false)
+  PayPalBoookingInfo PayPalBoookingInfo @relation(fields: [payPalBoookingId], references: [paypalBoookingId], onDelete: Cascade)
+}
+
+model Discount {
+  discountId         String @id
+  discountName       String
+  discountPercantage String
+  validTill          String @default("")
+  validFrom          String @default("")
+}
+
+model PayPalBoookingInfo {
+  paypalBoookingId String           @id
+  paymentEmail     String           @default("")
+  captureId        String
+  payerId          String           @default("")
+  paymentId        String           @default("")
+  contactEmail     String           @default("")
+  AccoBooking      AccoBooking[]
+  BicycleBooking   BicycleBooking[]
+  BoatBooking      BoatBooking[]
+  BuggyBooking     BuggyBooking[]
+}
+
+model PayPalInfo {
+  id                String @id
+  trackingId        String @unique
+  merchantId        String
+  partner_client_id String
+  email             String @unique
+}
+
+enum Role {
+  ADMIN
+  SELLER
+}
