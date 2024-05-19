@@ -1,7 +1,8 @@
 import { atomWithStorage } from 'jotai/utils';
 
 const selectionInital : SelectionProps = {
-    option: undefined
+    option: undefined,
+    location: undefined
 }
 
 
