@@ -18,6 +18,15 @@ const config = {
       },
     },
     extend: {
+      colors: {
+          'yellow':'#f1c646',
+          'mid-blue':'#0b1f49',
+          'dim-grey':'#474747'
+      },
+      fontFamily: {
+        libre: [`var(--font-heading)`],
+        ibm: [`var(--font-text)`]
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

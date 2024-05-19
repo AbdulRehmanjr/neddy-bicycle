@@ -60,7 +60,7 @@ export const BikeCalendar = () => {
     }
 
     const handleProceed = () => {
-        router.push("/booking")
+        router.push("/location")
     }
 
 
@@ -78,7 +78,7 @@ export const BikeCalendar = () => {
             <td className='relative border-[1px] border-gray-900 w-[1.5rem] h-[3rem] md:w-[4rem] md:h-[6rem]'>
                 <button type="button"
                     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-                    className={`absolute top-0 left-0 w-full h-full ${(isInRange(date) || isStart || isEnd) && 'bg-gray-900 text-white'}`}
+                    className={`absolute top-0 left-0 w-full h-full ${(isInRange(date) || isStart || isEnd) && 'bg-yellow text-white'}`}
                     disabled={isPast}
                     onClick={() => {
                         handleDateClick(date)
@@ -94,11 +94,11 @@ export const BikeCalendar = () => {
         )
     }
     return (
-        <div className={`text-gray-900 flex flex-col items-center gap-2 transition duration-300 ease-in-out p-2 `}>
+        <div className={`text-yellow font-ibm flex flex-col items-center gap-2 transition duration-300 ease-in-out p-2 `}>
             <div className="flex font-bold items-center justify-between gap-4 text-lg w-full">
-                <Button onClick={handlePreviousMonth}>Prev</Button>
-                <p>{selectedDate ? selectedDate.format('MMMM YYYY') : dayjs().format('MMMM YYYY')}</p>
-                <Button onClick={handleNextMonth}>Prev</Button>
+                <Button onClick={handlePreviousMonth} className="bg-yellow hover:bg-yellow">Prev</Button>
+                <p className="text-yellow font-extrabold">{selectedDate ? selectedDate.format('MMMM YYYY') : dayjs().format('MMMM YYYY')}</p>
+                <Button onClick={handleNextMonth} className="bg-yellow hover:bg-yellow">Prev</Button>
             </div>
             <table className='rounded-md'  >
                 <thead>
@@ -128,7 +128,7 @@ export const BikeCalendar = () => {
             </table>
             {
                 (rangeStart && rangeEnd) &&
-                <Button onClick={handleProceed}>
+                <Button onClick={handleProceed} className="bg-yellow hover:bg-yellow">
                     Continue
                 </Button>
             }

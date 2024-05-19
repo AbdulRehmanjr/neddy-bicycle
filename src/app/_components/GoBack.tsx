@@ -7,7 +7,7 @@ export const GoBack = () => {
 
     const router = useRouter()
     return (
-        <Button className="w-fit" onClick={(_e) => router.back()}>
+        <Button className="w-fit bg-yellow hover:bg-yellow font-ibm" onClick={(_e) => router.back()}>
             Go back
         </Button>
     )
