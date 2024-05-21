@@ -1,7 +1,10 @@
 type SelectionProps = {
-    option: 1 | 2 | 3 | undefined
+    startDate: string | undefined
+    endDate: string | undefined
     location: 1 | 2 | undefined
+    duration: number
     men: number,
-    ladies:number,
-    kids:number
+    ladies: number,
+    kids: number,
+    amount: number
 }
