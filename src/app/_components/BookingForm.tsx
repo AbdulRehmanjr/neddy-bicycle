@@ -6,6 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form"
 import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
+import { api } from "~/trpc/react"
+import { useAtomValue, useSetAtom } from "jotai/react"
+import { selectionAtom, triggerAtom } from "~/store"
 
 const formSchema = z.object({
     firstName: z.string({ required_error: 'Field is required.' }),
@@ -18,12 +21,32 @@ const formSchema = z.object({
 
 export const BookingForm = () => {
 
+    const bookingData = useAtomValue(selectionAtom)
+    const setTrigger = useSetAtom(triggerAtom)
+
+    const createOrder = api.booking.create.useMutation({
+        onSuccess:()=>{setTrigger(true)}
+    })
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     })
 
     const formSubmitted = (data: z.infer<typeof formSchema>) => {
-        console.log(data)
+        createOrder.mutate({
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            phone: data.phone,
+            address: data.address,
+            amount: bookingData.amount,
+            men: bookingData.men,
+            ladies: bookingData.ladies,
+            kids: bookingData.kids,
+            duration: bookingData.duration,
+            startDate: bookingData.startDate ?? '',
+            endDate: bookingData.endDate??'',
+            pickup:bookingData.location ?? 0,
+        })
     }
 
     return (

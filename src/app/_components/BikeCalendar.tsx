@@ -5,15 +5,18 @@ import { useMemo, useState } from "react"
 import dayjs, { type Dayjs } from 'dayjs'
 import { Button } from "~/components/ui/button"
 import isBetween from 'dayjs/plugin/isBetween'
+import { useSetAtom } from "jotai/react"
+import { selectionAtom } from "~/store"
 
 dayjs.extend(isBetween)
 
 export const BikeCalendar = () => {
 
     const router = useRouter()
-    const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
-    const [rangeStart, setRangeStart] = useState<Dayjs | null>(null);
-    const [rangeEnd, setRangeEnd] = useState<Dayjs | null>(null);
+    const setData = useSetAtom(selectionAtom)
+    const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs())
+    const [rangeStart, setRangeStart] = useState<Dayjs | null>(null)
+    const [rangeEnd, setRangeEnd] = useState<Dayjs | null>(null)
 
     const currentMonth: Dayjs[][] = useMemo(() => {
         const currentMonth = selectedDate || dayjs()
@@ -21,7 +24,7 @@ export const BikeCalendar = () => {
         const daysInMonth = currentMonth.daysInMonth()
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const emptyDaysBefore: Dayjs[] = Array(firstDay).fill(null)
-        const currentMonthDays: Dayjs[] = Array.from({ length: daysInMonth }, (_, i) => dayjs(currentMonth).date(i + 1));
+        const currentMonthDays: Dayjs[] = Array.from({ length: daysInMonth }, (_, i) => dayjs(currentMonth).date(i + 1))
         const calendarGrid: Dayjs[] = [...emptyDaysBefore, ...currentMonthDays]
         const weekgrid: Dayjs[][] = []
         const chunkSize = 7
@@ -44,13 +47,17 @@ export const BikeCalendar = () => {
 
         if (rangeStart === null) {
             setRangeStart(date)
+            setData((prev) => ({ ...prev, startDate: date.format('YYYY-MM-DD') }))
         }
         else if (rangeEnd === null && !date.isBefore(rangeStart, "day")) {
             setRangeEnd(date)
+            const duration = dayjs(date).diff(dayjs(rangeStart), 'days') + 1
+            setData((prev) => ({ ...prev, endDate: date.format('YYYY-MM-DD'),duration:duration }))
         }
         else {
             setRangeStart(null)
             setRangeEnd(null)
+            setData((prev) => ({ ...prev, startDate: undefined, endDate: undefined }))
         }
     }
 
@@ -100,7 +107,7 @@ export const BikeCalendar = () => {
                 <p className="text-yellow font-extrabold">{selectedDate ? selectedDate.format('MMMM YYYY') : dayjs().format('MMMM YYYY')}</p>
                 <Button onClick={handleNextMonth} className="bg-yellow hover:bg-yellow">Prev</Button>
             </div>
-            <table className='rounded-md'  >
+            <table className='rounded-md'>
                 <thead>
                     <tr className='text-xs sm:text-sm md:text-base lg:text-lg '>
                         <th className="p-2 min-w-[4rem] md:min-w-[6rem]">Sun</th>

@@ -8,14 +8,14 @@ datasource db {
 }
 
 model Account {
-  accountId String @id
+  accountId String @id @default(uuid())
   email     String @unique
   password  String
   role      Role   @default(ADMIN)
 }
 
 model AccoBooking {
-  accoBookingId      String             @id
+  accoBookingId      String             @id @default(uuid())
   name               String
   surname            String
   email              String
@@ -34,7 +34,7 @@ model AccoBooking {
 }
 
 model Bicycle {
-  bicycleId          String               @id
+  bicycleId          String               @id @default(uuid())
   name               String
   code               String               @unique
   image              String
@@ -46,7 +46,7 @@ model Bicycle {
 }
 
 model BicycleBooking {
-  bicycleBookingId   String               @id
+  bicycleBookingId   String               @id @default(uuid())
   pickup             String
   email              String
   firstName          String
@@ -63,7 +63,7 @@ model BicycleBooking {
 }
 
 model BicycleBookingItem {
-  bicycleBookingItemId String         @id
+  bicycleBookingItemId String         @id @default(uuid())
   size                 String
   startDate            String
   endDate              String
@@ -76,7 +76,7 @@ model BicycleBookingItem {
 }
 
 model BoatBooking {
-  boatBookingId      String             @id
+  boatBookingId      String             @id @default(uuid())
   name               String
   surname            String
   email              String
@@ -99,7 +99,7 @@ model BoatBooking {
 }
 
 model BuggyBooking {
-  buggyBookingId     String             @id
+  buggyBookingId     String             @id @default(uuid())
   date               String
   name               String
   surname            String
@@ -112,7 +112,7 @@ model BuggyBooking {
 }
 
 model Discount {
-  discountId         String @id
+  discountId         String @id @default(uuid())
   discountName       String
   discountPercantage String
   validTill          String @default("")
@@ -120,7 +120,7 @@ model Discount {
 }
 
 model PayPalBoookingInfo {
-  paypalBoookingId String           @id
+  paypalBoookingId String           @id @default(uuid())
   paymentEmail     String           @default("")
   captureId        String
   payerId          String           @default("")
@@ -130,14 +130,35 @@ model PayPalBoookingInfo {
   BicycleBooking   BicycleBooking[]
   BoatBooking      BoatBooking[]
   BuggyBooking     BuggyBooking[]
+  BikeBookings     BikeBookings[]
 }
 
 model PayPalInfo {
-  id                String @id
+  id                String @id @default(uuid())
   trackingId        String @unique
   merchantId        String
   partner_client_id String
   email             String @unique
+}
+
+model BikeBookings {
+  bikeBookingId String             @id @default(uuid())
+  firstName     String
+  lastName      String
+  email         String
+  phone         String
+  address       String
+  startDate     String
+  endDate       String
+  duration      Int                @default(0)
+  amount        Int
+  kids          Int
+  men           Int
+  ladies        Int
+  pickup        Int
+  isRefund      Boolean            @default(false)
+  payPal        PayPalBoookingInfo @relation(fields: [payPalId], references: [paypalBoookingId])
+  payPalId      String
 }
 
 enum Role {
