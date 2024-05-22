@@ -7,8 +7,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
 import { api } from "~/trpc/react"
-import { useAtomValue, useSetAtom } from "jotai/react"
-import { selectionAtom, triggerAtom } from "~/store"
+import { useAtom, useSetAtom } from "jotai/react"
+import { bookingId, selectionAtom, triggerAtom } from "~/store"
 
 const formSchema = z.object({
     firstName: z.string({ required_error: 'Field is required.' }),
@@ -18,20 +18,36 @@ const formSchema = z.object({
     address: z.string({ required_error: 'Field is required.' }),
 })
 
-
 export const BookingForm = () => {
 
-    const bookingData = useAtomValue(selectionAtom)
+    const [bookingData, setBookingData] = useAtom(selectionAtom)
     const setTrigger = useSetAtom(triggerAtom)
+    const setBookingId = useSetAtom(bookingId)
 
-    const createOrder = api.booking.create.useMutation({
-        onSuccess:()=>{setTrigger(true)}
-    })
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     })
 
+    const createOrder = api.booking.create.useMutation({
+        onSuccess: (data: string) => {
+            setTrigger(false)
+            form.reset()
+            setBookingId(() => data)
+        }
+    })
+
+
     const formSubmitted = (data: z.infer<typeof formSchema>) => {
+        setBookingData((prev) => (
+            {
+                ...prev, 
+                firstName: data.firstName,
+                lastName: data.lastName,
+                email: data.email,
+                phone: data.phone,
+                address: data.address
+            }
+        ))
         createOrder.mutate({
             firstName: data.firstName,
             lastName: data.lastName,
@@ -44,8 +60,8 @@ export const BookingForm = () => {
             kids: bookingData.kids,
             duration: bookingData.duration,
             startDate: bookingData.startDate ?? '',
-            endDate: bookingData.endDate??'',
-            pickup:bookingData.location ?? 0,
+            endDate: bookingData.endDate ?? '',
+            pickup: bookingData.location ?? 0,
         })
     }
 
@@ -78,7 +94,8 @@ export const BookingForm = () => {
                             <FormMessage />
                         </FormItem>
                     )}
-                /> <FormField
+                />
+                <FormField
                     control={form.control}
                     name="email"
                     render={({ field }) => (
@@ -118,8 +135,8 @@ export const BookingForm = () => {
                     )}
                 />
                 <div className="col-span-2 flex justify-center">
-                    <Button type="submit" className="bg-yellow hover:bg-yellow">
-                        Continue
+                    <Button type="submit" className="bg-yellow hover:bg-yellow" disabled={createOrder.isPending}>
+                        {createOrder.isPending ? 'Processing...' : 'Continue'}
                     </Button>
                 </div>
             </form>
