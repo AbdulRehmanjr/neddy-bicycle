@@ -2,6 +2,7 @@
 
 import { useAtomValue } from "jotai/react"
 import { selectionAtom } from "~/store"
+import { PayPalButton } from "./PayPalButton"
 
 export const AmountDetail = () => {
 
@@ -41,8 +42,9 @@ export const AmountDetail = () => {
                 </p>
                 <p className="flex gap-2">
                     <span className="font-extrabold">Price:</span>
-                    <span>{data.amount} €</span>
+                    <span>{data.amount} ₨</span>
                 </p>
+                <PayPalButton/>
             </div>
         </div>
     )

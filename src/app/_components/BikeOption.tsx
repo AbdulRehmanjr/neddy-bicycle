@@ -3,7 +3,6 @@
 import { useAtom } from "jotai/react"
 import { Minus, Plus } from "lucide-react"
 import Link from "next/link"
-import { useEffect } from "react"
 import { Button } from "~/components/ui/button"
 import { selectionAtom } from "~/store"
 
@@ -11,20 +10,13 @@ export const BikeOptions = () => {
 
     const [selection, setSelection] = useAtom(selectionAtom)
 
-    useEffect(() => {
-        setSelection((prev) => ({
-            ...prev,
-            amount: selection.kids * 150 + selection.ladies * 150 + selection.kids * 150
-        }))
-    }, [selection.kids, selection.ladies, setSelection])
-
     return (
         <div className="flex flex-col gap-12">
             <div className="flex justify-center items-center gap-14">
                 <div className="flex flex-col gap-6">
                     <div className={`flex flex-col justify-center items-center gap-4 font-ibm bg-[url('/men.jpeg')] bg-cover text-yellow  hover:shadow-2xl cursor-pointer border-2 border-yellow rounded-lg w-[25rem] h-[25rem]`}>
                         <h2 className="font-extrabold text-4xl">Gentlemen bikes</h2>
-                        <h3 className="font-extrabold text-2xl">150 €</h3>
+                        <h3 className="font-extrabold text-2xl">150 ₨</h3>
                     </div>
                     <div className="flex justify-center items-center gap-6">
                         <Button
@@ -46,7 +38,7 @@ export const BikeOptions = () => {
                 <div className="flex flex-col gap-6">
                     <div className={`flex flex-col justify-center items-center gap-4 font-ibm bg-[url('/ladies.jpeg')] bg-cover text-yellow hover:shadow-2xl cursor-pointer border-2 border-yellow rounded-lg w-[25rem] h-[25rem]`}>
                         <h2 className="font-extrabold text-4xl">Ladies bikes</h2>
-                        <h3 className="font-extrabold text-2xl">150 €</h3>
+                        <h3 className="font-extrabold text-2xl">150 ₨</h3>
                     </div>
                     <div className="flex justify-center items-center gap-6">
                         <Button
@@ -68,7 +60,7 @@ export const BikeOptions = () => {
                 <div className="flex flex-col gap-6">
                     <div className={`flex flex-col justify-center items-center gap-4 font-ibm  hover:bg-yellow hover:text-white hover:shadow-2xl cursor-pointer border-2 border-yellow rounded-lg w-[25rem] h-[25rem]`}>
                         <h2 className="font-extrabold text-4xl">Kids bikes</h2>
-                        <h3 className="font-extrabold text-2xl">150 €</h3>
+                        <h3 className="font-extrabold text-2xl">150 ₨</h3>
                     </div>
                     <div className="flex justify-center items-center gap-6">
                         <Button

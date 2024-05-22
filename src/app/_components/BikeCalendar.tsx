@@ -5,18 +5,23 @@ import { useMemo, useState } from "react"
 import dayjs, { type Dayjs } from 'dayjs'
 import { Button } from "~/components/ui/button"
 import isBetween from 'dayjs/plugin/isBetween'
-import { useSetAtom } from "jotai/react"
+import { useAtom } from "jotai/react"
 import { selectionAtom } from "~/store"
 
 dayjs.extend(isBetween)
 
+type RangeProps = {
+    rangeStart: Dayjs | null
+    rangeEnd: Dayjs | null
+}
+
 export const BikeCalendar = () => {
 
     const router = useRouter()
-    const setData = useSetAtom(selectionAtom)
+    const [data, setData] = useAtom(selectionAtom)
     const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs())
-    const [rangeStart, setRangeStart] = useState<Dayjs | null>(null)
-    const [rangeEnd, setRangeEnd] = useState<Dayjs | null>(null)
+    const [range, setRange] = useState<RangeProps>({ rangeStart: null, rangeEnd: null })
+    const [price, setPrice] = useState<number>(0)
 
     const currentMonth: Dayjs[][] = useMemo(() => {
         const currentMonth = selectedDate || dayjs()
@@ -43,43 +48,58 @@ export const BikeCalendar = () => {
         setSelectedDate(newDate.clone().add(1, 'month'));
     }
 
+    const calculatePrice = (duration: number) => {
+        let subTotal = 0
+        const prices = {
+            1: 150,
+            2: 100,
+        }
+
+        if (duration == 7)
+            subTotal = 7 * (data.men * prices['2'] + data.ladies * prices['2'] + data.kids * prices['2'])
+        else if (duration >= 2)
+            subTotal = duration * (data.men * prices['2'] + data.ladies * prices['2'] + data.kids * prices['2'])
+        else
+            subTotal = duration * (data.men * prices['1'] + data.ladies * prices['1'] + data.kids * prices['1'])
+
+        return subTotal
+    }
+
     const handleDateClick = (date: Dayjs) => {
 
-        if (rangeStart === null) {
-            setRangeStart(date)
+        if (range.rangeStart === null) {
+            setRange((prev) => ({ ...prev, rangeStart: date }))
             setData((prev) => ({ ...prev, startDate: date.format('YYYY-MM-DD') }))
         }
-        else if (rangeEnd === null && !date.isBefore(rangeStart, "day")) {
-            setRangeEnd(date)
-            const duration = dayjs(date).diff(dayjs(rangeStart), 'days') + 1
-            setData((prev) => ({ ...prev, endDate: date.format('YYYY-MM-DD'),duration:duration }))
+        else if (range.rangeEnd === null && !date.isBefore(range.rangeStart, "day")) {
+            setRange((prev) => ({ ...prev, rangeEnd: date }))
+            const duration = dayjs(date).diff(dayjs(range.rangeStart), 'days') + 1
+            const price = calculatePrice(duration)
+            setPrice(() => price)
+            setData((prev) => ({ ...prev, endDate: date.format('YYYY-MM-DD'), duration: duration, amount: price }))
         }
         else {
-            setRangeStart(null)
-            setRangeEnd(null)
+            setRange(() => ({ rangeStart: null, rangeEnd: null }))
             setData((prev) => ({ ...prev, startDate: undefined, endDate: undefined }))
+            setPrice(() => 0)
         }
     }
 
     const isInRange = (date: Dayjs) => {
-        if (!rangeStart || !rangeEnd) return false;
-        return date.isBetween(rangeStart, rangeEnd, "day")
+        if (!range.rangeStart || !range.rangeEnd) return false
+        return date.isBetween(range.rangeStart, range.rangeEnd, "day")
     }
 
-    const handleProceed = () => {
-        router.push("/location")
-    }
-
+    const handleProceed = () => { router.push("/location") }
 
     const DateTemplate = ({ date }: { date: Dayjs }) => {
 
         if (!date) return <td className='border-[1px] border-gray-900'></td>
 
-
         const isPast = date.isBefore(dayjs(), 'day')
-        const isStart = rangeStart?.isSame(date, "day");
-        const isEnd = rangeEnd?.isSame(date, "day");
-        const currentPrice = '100'
+        const isStart = range.rangeStart?.isSame(date, "day");
+        const isEnd = range.rangeEnd?.isSame(date, "day");
+        const currentPrice = price == 0 ? calculatePrice(1) : price
 
         return (
             <td className='relative border-[1px] border-gray-900 w-[1.5rem] h-[3rem] md:w-[4rem] md:h-[6rem]'>
@@ -93,13 +113,14 @@ export const BikeCalendar = () => {
                 >
                     <p className={`flex flex-col gap-1 ${isPast && 'text-gray-400'}`}>
                         <span className="font-bold">{date.date()}</span>
-                        {!isPast && <span>{currentPrice} €</span>}
+                        {!isPast && <span>{currentPrice} ₨</span>}
                         {/* {isReserved && <span>N/A</span>} */}
                     </p>
                 </button>
             </td>
         )
     }
+
     return (
         <div className={`text-yellow font-ibm flex flex-col items-center gap-2 transition duration-300 ease-in-out p-2 `}>
             <div className="flex font-bold items-center justify-between gap-4 text-lg w-full">
@@ -134,12 +155,11 @@ export const BikeCalendar = () => {
                 </tbody>
             </table>
             {
-                (rangeStart && rangeEnd) &&
+                (range.rangeStart && range.rangeEnd) &&
                 <Button onClick={handleProceed} className="bg-yellow hover:bg-yellow">
                     Continue
                 </Button>
             }
-
         </div>
     )
 }

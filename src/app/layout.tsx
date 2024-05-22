@@ -1,21 +1,21 @@
 import "~/styles/globals.css";
 
-import { TRPCReactProvider } from "~/trpc/react";
 import { Header } from "~/app/_components/Header";
 import { GoBack } from "./_components/GoBack";
 
-import {Libre_Franklin,IBM_Plex_Mono} from 'next/font/google'
+import { Libre_Franklin, IBM_Plex_Mono } from 'next/font/google'
+import { Providers } from "./provider";
 
- const libre = Libre_Franklin ({
-    subsets: ["latin"],
-    weight: '600',
-    variable: "--font-heading",
+const libre = Libre_Franklin({
+  subsets: ["latin"],
+  weight: '600',
+  variable: "--font-heading",
 })
 
 const ibm = IBM_Plex_Mono({
-    subsets: ["latin"],
-    weight: '400',
-    variable: "--font-text",
+  subsets: ["latin"],
+  weight: '400',
+  variable: "--font-text",
 })
 
 export const metadata = {
@@ -32,13 +32,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${ibm.variable} ${libre.variable} min-h-screen`}>
       <body className="grid grid-cols-12">
-        <TRPCReactProvider>
-          <Header />
-          <div className="col-span-12 container flex justify-start">
-            <GoBack />
-          </div>
-          {children}
-        </TRPCReactProvider>
+        
+        <Providers>
+            <Header />
+            <div className="col-span-12 container flex justify-start">
+              <GoBack />
+            </div>
+            {children}
+          </Providers>
       </body>
     </html>
   );

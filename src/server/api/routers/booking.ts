@@ -38,7 +38,7 @@ export const BookingRouter = createTRPCRouter({
                     }
                 })
 
-            await ctx.db.bikeBookings.create({
+                await ctx.db.bikeBookings.create({
                     data: {
                         firstName: input.firstName,
                         lastName: input.lastName,
@@ -53,17 +53,36 @@ export const BookingRouter = createTRPCRouter({
                         ladies: input.ladies,
                         kids: input.kids,
                         pickup: input.pickup,
-                        payPalId:payPalBoookingInfo.paypalBoookingId
+                        payPalId: payPalBoookingInfo.paypalBoookingId
                     }
                 })
+                return payPalBoookingInfo.paypalBoookingId
             } catch (error) {
 
-                if(error instanceof TRPCClientError){
+                if (error instanceof TRPCClientError) {
                     console.error(error.message)
                     throw new Error(error.message)
                 }
                 console.error(error)
                 throw new Error('Something went wrong ')
+            }
+        }),
+    deleteBooking: publicProcedure.input(z.object({ paypalId: z.string() }))
+        .mutation(async ({ ctx, input }) => {
+            try {
+
+                await ctx.db.payPalBoookingInfo.delete({
+                    where: {
+                        paypalBoookingId: input.paypalId
+                    }
+                })
+            } catch (error) {
+                if (error instanceof TRPCClientError) {
+                    console.error(error.message)
+                    throw new Error(error.message)
+                }
+                console.error(error)
+                throw new Error('Something went wrong')
             }
         })
 })

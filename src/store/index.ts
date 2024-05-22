@@ -8,8 +8,14 @@ const selectionInital: SelectionProps = {
     men: 0,
     ladies: 0,
     kids: 0,
-    amount:0
+    amount:0,
+    firstName:'',
+    lastName:'',
+    email:'',
+    phone:'',
+    address:'',
 }
 
-export const selectionAtom = atomWithStorage('selectionAtom', selectionInital)
-export const triggerAtom = atomWithStorage<boolean>('triggerAtom', false)
+export const bookingId = atomWithStorage<string>('neddyBookingAtom','')
+export const selectionAtom = atomWithStorage<SelectionProps>('neddySelectionAtom', selectionInital)
+export const triggerAtom = atomWithStorage<boolean>('neddyTriggerAtom', false)

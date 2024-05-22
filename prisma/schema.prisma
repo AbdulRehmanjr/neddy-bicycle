@@ -157,7 +157,7 @@ model BikeBookings {
   ladies        Int
   pickup        Int
   isRefund      Boolean            @default(false)
-  payPal        PayPalBoookingInfo @relation(fields: [payPalId], references: [paypalBoookingId])
+  payPal        PayPalBoookingInfo @relation(fields: [payPalId], references: [paypalBoookingId], onDelete: Cascade)
   payPalId      String
 }
 
