@@ -23,6 +23,8 @@ export const env = createEnv({
     PAYPAL_SELLER_CUSTOM_ID: z.string(),
     ZOHO_MAIL: z.string(),
     ZOHO_PASSWORD: z.string(),
+    GOOGLE_CLIENT:z.string(),
+    GOOGLE_SECERT:z.string(),
   },
   client: {
     NEXT_PUBLIC_PAYPAL: z.string(),
@@ -41,6 +43,8 @@ export const env = createEnv({
     PAYPAL_SELLER_CUSTOM_ID:process.env.PAYPAL_SELLER_CUSTOM_ID,
     ZOHO_MAIL: process.env.ZOHO_MAIL,
     ZOHO_PASSWORD: process.env.ZOHO_PASSWORD,
+    GOOGLE_CLIENT:process.env.GOOGLE_CLIENT,
+    GOOGLE_SECERT:process.env.GOOGLE_SECERT,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
   emptyStringAsUndefined: true,

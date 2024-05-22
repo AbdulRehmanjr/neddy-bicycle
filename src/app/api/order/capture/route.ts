@@ -1,15 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { TRPCClientError } from "@trpc/client";
 import axios from "axios";
 import { env } from "~/env";
+import { calendar } from "~/server/config/calendar";
+import { authClient } from "~/server/config/oauthClient";
+import { db } from "~/server/db";
 
 export async function POST(req: Request) {
 
     try {
-        const body = await req.json()
-        const orderId = body.orderId
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const { orderId, bookingData } : {orderId:string,bookingData:SelectionProps} = await req.json()
 
         const username = env.PAYPAL_CLIENT
         const password = env.PAYPAL_SECERT
@@ -22,9 +22,11 @@ export async function POST(req: Request) {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Paypal-Partner-Attribution-Id': 'KOLIBRI_SP_PPCP'
             },
-        };
+        }
+
         const responseType = 'grant_type=client_credentials';
         const tokenResponse = await axios.post(`${env.PAYPAL_API}/v1/oauth2/token`, responseType, config)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         const accessToken: string = tokenResponse.data.access_token;
         const paypalApiUrl = `${env.PAYPAL_API}/v2/checkout/orders/${orderId}/capture`;
         const headers = {
@@ -33,7 +35,27 @@ export async function POST(req: Request) {
             'Paypal-Partner-Attribution-Id': env.BN_CODE
         }
         const response = await axios.post(paypalApiUrl, {}, { headers })
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const order = response.data
+
+        const googleToken = await db.calendars.findFirstOrThrow({ where: { platform: 'Neddy' } })
+        authClient.setCredentials({ refresh_token: googleToken?.refreshToken })
+        await calendar.events.insert({
+            calendarId: 'primary',
+            auth: authClient,
+            requestBody: {
+                summary: `${bookingData.firstName} ${bookingData.lastName}`,
+                description: `\nPhone:${bookingData.phone}\nEmail:${bookingData.email}\nAddress:${bookingData.address}\nAmount:${bookingData.amount}\nMen:${bookingData.men}\nLadies:${bookingData.ladies}\nKids:${bookingData.kids}\nDuration:${bookingData.duration} days`,
+                start: {
+                    dateTime: new Date(bookingData.startDate??"").toISOString(),
+                    timeZone: "Asia/Karachi"
+                },
+                end: {
+                    dateTime: new Date(bookingData.endDate??"").toISOString(),
+                    timeZone: "Asia/Karachi"
+                }
+            }
+        });
         return Response.json(order)
     } catch (error) {
 
