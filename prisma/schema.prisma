@@ -165,3 +165,9 @@ enum Role {
   ADMIN
   SELLER
 }
+
+model Calendars {
+  calendarId   String @id @default(uuid())
+  refreshToken String
+  platform     String
+}

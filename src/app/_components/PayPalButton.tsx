@@ -86,6 +86,7 @@ export const PayPalButton = () => {
             },
             body: JSON.stringify({
                 orderId: data.orderID,
+                bookingData : bookingData
             })
         })
     }
