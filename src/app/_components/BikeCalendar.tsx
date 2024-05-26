@@ -21,7 +21,7 @@ export const BikeCalendar = () => {
     const [data, setData] = useAtom(selectionAtom)
     const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs())
     const [range, setRange] = useState<RangeProps>({ rangeStart: null, rangeEnd: null })
-    const [price, setPrice] = useState<number>(0)
+    const [duration, setDuration] = useState<number>(1)
 
     const currentMonth: Dayjs[][] = useMemo(() => {
         const currentMonth = selectedDate || dayjs()
@@ -54,7 +54,6 @@ export const BikeCalendar = () => {
             1: 150,
             2: 100,
         }
-
         if (duration == 7)
             subTotal = 7 * (data.men * prices['2'] + data.ladies * prices['2'] + data.kids * prices['2'])
         else if (duration >= 2)
@@ -68,20 +67,19 @@ export const BikeCalendar = () => {
     const handleDateClick = (date: Dayjs) => {
 
         if (range.rangeStart === null) {
-            setRange((prev) => ({ ...prev, rangeStart: date }))
-            setData((prev) => ({ ...prev, startDate: date.format('YYYY-MM-DD'),endDate:date.format('YYYY-MM-DD') }))
+            setRange((prev) => ({ ...prev, rangeStart: date, rangeEnd: date }))
+            setData((prev) => ({ ...prev, startDate: date.format('YYYY-MM-DD'), endDate: date.format('YYYY-MM-DD') }))
         }
         else if (!date.isBefore(range.rangeStart, "day")) {
             setRange((prev) => ({ ...prev, rangeEnd: date }))
             const duration = dayjs(date).diff(dayjs(range.rangeStart), 'days') + 1
             const price = calculatePrice(duration)
-            setPrice(() => price)
+            setDuration(() => duration)
             setData((prev) => ({ ...prev, endDate: date.format('YYYY-MM-DD'), duration: duration, amount: price }))
         }
         else {
             setRange(() => ({ rangeStart: null, rangeEnd: null }))
             setData((prev) => ({ ...prev, startDate: undefined, endDate: undefined }))
-            setPrice(() => 0)
         }
     }
 
@@ -99,7 +97,7 @@ export const BikeCalendar = () => {
         const isPast = date.isBefore(dayjs(), 'day')
         const isStart = range.rangeStart?.isSame(date, "day");
         const isEnd = range.rangeEnd?.isSame(date, "day");
-        const currentPrice = price == 0 ? calculatePrice(1) : price
+        const currentPrice = duration <= 1 ? 150 : 100
 
         return (
             <td className='relative border-[1px] border-gray-300 w-[1.5rem] h-[3rem] md:w-[4rem] md:h-[6rem]'>
@@ -107,9 +105,7 @@ export const BikeCalendar = () => {
                     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
                     className={`absolute top-0 left-0 w-full h-full ${(isInRange(date) || isStart || isEnd) && 'bg-yellow text-white'}`}
                     disabled={isPast}
-                    onClick={() => {
-                        handleDateClick(date)
-                    }}
+                    onClick={() => { handleDateClick(date) }}
                 >
                     <div className={`flex flex-col gap-1 ${isPast && 'text-gray-300'}`}>
                         <span className="font-bold">{date.date()}</span>
@@ -160,7 +156,7 @@ export const BikeCalendar = () => {
                 </tbody>
             </table>
             {
-                range.rangeStart  &&
+                range.rangeStart &&
                 <Button onClick={handleProceed} className="bg-yellow hover:bg-yellow-hover p-6">
                     Continue
                 </Button>

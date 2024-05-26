@@ -2,13 +2,14 @@
 
 import { useAtom } from "jotai/react"
 import { Minus, Plus } from "lucide-react"
-import Link from "next/link"
 import { Button } from "~/components/ui/button"
 import { selectionAtom } from "~/store"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 export const BikeOptions = () => {
 
+    const router = useRouter()
     const [selection, setSelection] = useAtom(selectionAtom)
 
     return (
@@ -16,7 +17,7 @@ export const BikeOptions = () => {
             <div className="flex justify-center items-center gap-14">
                 <div className="flex flex-col gap-6 hover:cursor-pointer">
                     <div className="relative bg-white text-white rounded-md w-[30rem] h-[25rem] " >
-                        <Image width={1080} height={810} className="w-full h-full rounded-md brightness-75" src="/men.jpeg" alt="bike image" />
+                        <Image width={1080} height={810} className="w-full h-full rounded-md brightness-75" src="/man.jpeg" alt="bike image" />
                         <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center">
                             <h2 className="text-4xl">Gentlemen bikes</h2>
                             <h3 className="text-2xl">150 SCR</h3>
@@ -41,7 +42,7 @@ export const BikeOptions = () => {
                 </div>
                 <div className="flex flex-col gap-6 hover:cursor-pointer">
                     <div className="relative bg-white text-white rounded-md w-[30rem] h-[25rem] " >
-                        <Image width={1080} height={810} className="w-full h-full rounded-md brightness-75" src="/ladies.jpeg" alt="bike image" />
+                        <Image width={1080} height={810} className="w-full h-full rounded-md brightness-75" src="/lady.jpeg" alt="bike image" />
                         <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center">
                             <h2 className="text-4xl">Ladies bikes</h2>
                             <h3 className="text-2xl">150 SCR</h3>
@@ -66,7 +67,7 @@ export const BikeOptions = () => {
                 </div>
                 <div className="flex flex-col gap-6 hover:cursor-pointer">
                     <div className="relative bg-white text-white rounded-md w-[30rem] h-[25rem] " >
-                        <Image width={1080} height={810} className="w-full h-full rounded-md brightness-75" src="/ladies.jpeg" alt="bike image" />
+                        <Image width={1080} height={810} className="w-full h-full rounded-md brightness-75" src="/kids.jpg" alt="bike image" />
                         <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center">
                             <h2 className="text-4xl">Kids bikes</h2>
                             <h3 className="text-2xl">150 SCR</h3>
@@ -94,8 +95,9 @@ export const BikeOptions = () => {
                 <Button
                     className="bg-yellow hover:bg-yellow-hover-hover p-6"
                     disabled={selection.kids == 0 && selection.ladies == 0 && selection.men == 0}
-                    asChild>
-                    <Link href={'/calendar'}>Continue</Link>
+                    onClick={() => router.push('/calendar')}
+                >
+                    Continue
                 </Button>
             </div>
         </div>
