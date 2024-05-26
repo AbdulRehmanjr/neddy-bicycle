@@ -20,12 +20,13 @@ const config = {
     extend: {
       colors: {
           'yellow':'#f1c646',
+          'yellow-hover':'#e0ac10',
           'mid-blue':'#0b1f49',
           'dim-grey':'#474747'
       },
       fontFamily: {
-        libre: [`var(--font-heading)`],
-        ibm: [`var(--font-text)`]
+        libre: [`var(--font-libre)`],
+        ibm: [`var(--font-ibm)`]
       },
       keyframes: {
         "accordion-down": {

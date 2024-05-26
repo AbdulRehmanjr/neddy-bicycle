@@ -54,7 +54,7 @@ export const EmailRouter = createTRPCRouter({
                 const email: Mail.Options = {
                     from: `${sender}`,
                     to: `${input.email}`,
-                    subject: "Hotel Mountain View Booking Confirmation",
+                    subject: "Neddy Bicycle Booking Confirmation",
                     html: `  
                     <table
                     style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse; font-family: Arial, sans-serif;">
@@ -68,7 +68,7 @@ export const EmailRouter = createTRPCRouter({
                         <td style="padding: 10px;">
                             <h2 style="margin-bottom: 10px;">Booking confirmation</h2>
                             <p>Dear ${input.firstName.trim()},</p>
-                            <p>Thank you for your booking. We are happy to host you for your stay on stay on La Digue:</p>
+                            <p>Thank you for your booking. We are happy to provide you bicycles for your stay on La Digue</p>
                             <p>
                                 <span style="font-weight:bold;">Your confirmation number is: </span>
                                 <span>${input.orderId}</span>
@@ -83,7 +83,7 @@ export const EmailRouter = createTRPCRouter({
                                 <span>${input.email}</span>
                             </p>
                             <p>
-                                <span style="font-weight:bold;">Conatct no.: </span>
+                                <span style="font-weight:bold;">Phone no.: </span>
                                 <span>${input.phone}</span>
                             </p>
                             <p>
@@ -96,18 +96,18 @@ export const EmailRouter = createTRPCRouter({
                             </p>
                             <p>
                                 <span style="font-weight:bold;">Duration: </span>
-                                <span>${input.duration}</span>
+                                <span>${input.duration} days</span>
                             </p>
                             <p>
-                                <span style="font-weight:bold;">Men bikes: </span>
+                                <span style="font-weight:bold;">Gentlemen bicycles: </span>
                                 <span>${input.men}</span>
                             </p>
                             <p>
-                                <span style="font-weight:bold;">Women bikes: </span>
+                                <span style="font-weight:bold;">Ladies bicycles: </span>
                                 <span>${input.ladies}</span>
                             </p>
                             <p>
-                                <span style="font-weight:bold;">Kids bikes: </span>
+                                <span style="font-weight:bold;">Kids bicycles: </span>
                                 <span>${input.kids}</span>
                             </p>
                             <p>
@@ -122,18 +122,18 @@ export const EmailRouter = createTRPCRouter({
                                 policy is attached below.</p>
                             <p style="margin-bottom:10px;">We are looking forward to seeing you soon.</p>
                             <p style="margin-bottom:10px;">Best regards,</p>
-                            <h2 style="margin-bottom:10px;">Team of Hotel Mountain View</h2>
+                            <h2 style="margin-bottom:10px;">Nedy’s Bicycle Rental</h2>
                         </td>
                     </tr>
                     <tr>
                         <td style="background-color: rgb(243,244,246);  padding: 15px; text-align: center; color:black">
                             <img src="https://res.cloudinary.com/dbjiys9se/image/upload/v1716368218/logo_e4lgrd.png"
-                                alt="Mountain View" style="width: 100px;">
-                            <p>Hotel Mountain View</p>
-                            <p>Grand Anse, La Digue</p>
+                                alt="Neddy Bicycle" style="width: 100px;">
+                            <p>Nedy’s Bicycle Rental</p>
+                            <p>La Passe, La Digue</p>
                             <p>Seychelles</p>
-                            <p>hotelmountainview7@gmail.com</p>
-                            <p>+248 2 59 00 73</p>
+                            <p>rayenradegonde@gmail.com</p>
+                            <p>+248 2 54 61 93</p>
                         </td>
                     </tr>
                 </table>`,
@@ -141,13 +141,8 @@ export const EmailRouter = createTRPCRouter({
                 }
                 await transporter.sendMail(email)
             } catch (error) {
-
-                console.log(error)
-                if (error instanceof TRPCClientError) {
-                    console.error(error.message)
-                    throw new Error(error.message)
-                }
-                throw new Error("Error")
+                console.error(error)
+                throw new Error("Something went wrong")
             }
         }),
     testMail: publicProcedure
@@ -174,7 +169,7 @@ export const EmailRouter = createTRPCRouter({
                 const email: Mail.Options = {
                     from: `${sender}`,
                     to: `abdulrehman2020white@gmail.com`,
-                    subject: "Hotel Mountain View Booking Confirmation",
+                    subject: "Hotel Neddy Bicycle Booking Confirmation",
                     html: `
                     Testing email send by sender ${sender}
                     `,
