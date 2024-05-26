@@ -15,8 +15,6 @@ const formSchema = z.object({
     lastName: z.string({ required_error: 'Field is required.' }),
     email: z.string({ required_error: 'Field is required.' }).email({ message: "Invalid email address" }),
     phone: z.string({ required_error: 'Field is required.' }),
-    guesthouse: z.optional(z.string({ required_error: 'Field is required.' })),
-    arrivalTime: z.optional(z.string({ required_error: 'Field is required.' }))
 })
 
 export const BookingForm = () => {
@@ -46,8 +44,6 @@ export const BookingForm = () => {
                 lastName: data.lastName,
                 email: data.email,
                 phone: data.phone,
-                address: data.guesthouse ?? '',
-                arrivalTime: data.arrivalTime ?? '',
             }
         ))
         createOrder.mutate({
@@ -55,8 +51,6 @@ export const BookingForm = () => {
             lastName: data.lastName,
             email: data.email,
             phone: data.phone,
-            guesthouse: data.guesthouse ?? '',
-            arrivalTime:data.arrivalTime ?? '',
             amount: bookingData.amount,
             men: bookingData.men,
             ladies: bookingData.ladies,
@@ -65,6 +59,8 @@ export const BookingForm = () => {
             startDate: bookingData.startDate ?? '',
             endDate: bookingData.endDate ?? '',
             pickup: bookingData.location ?? 0,
+            guesthouse: bookingData.guesthouse ?? '',
+            arrivalTime: bookingData.arrivalTime ?? '',
         })
     }
 
@@ -119,32 +115,6 @@ export const BookingForm = () => {
                             <FormLabel>Phone no.</FormLabel>
                             <FormControl>
                                 <Input placeholder="Enter the phone no." {...field} value={field.value ?? ''} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="guesthouse"
-                    render={({ field }) => (
-                        <FormItem className="col-span-2 md:col-span-1">
-                            <FormLabel>Guesthouse</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Enter the guesthouse name" {...field} value={field.value ?? ''} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="arrivalTime"
-                    render={({ field }) => (
-                        <FormItem className="col-span-2 md:col-span-1">
-                            <FormLabel>Arrival time</FormLabel>
-                            <FormControl>
-                                <Input className="block w-full" type="time" {...field} value={field.value ?? ''} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
