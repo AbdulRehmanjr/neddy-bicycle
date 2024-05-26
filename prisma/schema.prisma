@@ -147,7 +147,8 @@ model BikeBookings {
   lastName      String
   email         String
   phone         String
-  address       String
+  guesthouse    String             @default("")
+  arrivalTime   String             @default("")
   startDate     String
   endDate       String
   duration      Int                @default(0)

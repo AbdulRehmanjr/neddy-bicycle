@@ -69,9 +69,9 @@ export const BikeCalendar = () => {
 
         if (range.rangeStart === null) {
             setRange((prev) => ({ ...prev, rangeStart: date }))
-            setData((prev) => ({ ...prev, startDate: date.format('YYYY-MM-DD') }))
+            setData((prev) => ({ ...prev, startDate: date.format('YYYY-MM-DD'),endDate:date.format('YYYY-MM-DD') }))
         }
-        else if (range.rangeEnd === null && !date.isBefore(range.rangeStart, "day")) {
+        else if (!date.isBefore(range.rangeStart, "day")) {
             setRange((prev) => ({ ...prev, rangeEnd: date }))
             const duration = dayjs(date).diff(dayjs(range.rangeStart), 'days') + 1
             const price = calculatePrice(duration)
@@ -94,7 +94,7 @@ export const BikeCalendar = () => {
 
     const DateTemplate = ({ date }: { date: Dayjs }) => {
 
-        if (!date) return <td className='border-[1px] border-gray-900'></td>
+        if (!date) return <td className='border-[1px] border-gray-300'></td>
 
         const isPast = date.isBefore(dayjs(), 'day')
         const isStart = range.rangeStart?.isSame(date, "day");
@@ -102,7 +102,7 @@ export const BikeCalendar = () => {
         const currentPrice = price == 0 ? calculatePrice(1) : price
 
         return (
-            <td className='relative border-[1px] border-gray-900 w-[1.5rem] h-[3rem] md:w-[4rem] md:h-[6rem]'>
+            <td className='relative border-[1px] border-gray-300 w-[1.5rem] h-[3rem] md:w-[4rem] md:h-[6rem]'>
                 <button type="button"
                     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
                     className={`absolute top-0 left-0 w-full h-full ${(isInRange(date) || isStart || isEnd) && 'bg-yellow text-white'}`}
@@ -111,22 +111,27 @@ export const BikeCalendar = () => {
                         handleDateClick(date)
                     }}
                 >
-                    <p className={`flex flex-col gap-1 ${isPast && 'text-gray-400'}`}>
+                    <div className={`flex flex-col gap-1 ${isPast && 'text-gray-300'}`}>
                         <span className="font-bold">{date.date()}</span>
-                        {!isPast && <span>{currentPrice} ₨</span>}
+                        {!isPast
+                            &&
+                            <p className="text-sm ">
+                                <span>{currentPrice}</span> <span>SCR</span>
+                            </p>
+                        }
                         {/* {isReserved && <span>N/A</span>} */}
-                    </p>
+                    </div>
                 </button>
             </td>
         )
     }
 
     return (
-        <div className={`text-yellow font-ibm flex flex-col items-center gap-2 transition duration-300 ease-in-out p-2 `}>
+        <div className={`text-dim-grey font-ibm flex flex-col items-center gap-10 transition duration-300 ease-in-out p-2 `}>
             <div className="flex font-bold items-center justify-between gap-4 text-lg w-full">
-                <Button onClick={handlePreviousMonth} className="bg-yellow hover:bg-yellow">Prev</Button>
+                <Button onClick={handlePreviousMonth} className="bg-yellow hover:bg-yellow-hover p-6">Prev</Button>
                 <p className="text-yellow font-extrabold">{selectedDate ? selectedDate.format('MMMM YYYY') : dayjs().format('MMMM YYYY')}</p>
-                <Button onClick={handleNextMonth} className="bg-yellow hover:bg-yellow">Prev</Button>
+                <Button onClick={handleNextMonth} className="bg-yellow hover:bg-yellow-hover p-6">Next</Button>
             </div>
             <table className='rounded-md'>
                 <thead>
@@ -155,8 +160,8 @@ export const BikeCalendar = () => {
                 </tbody>
             </table>
             {
-                (range.rangeStart && range.rangeEnd) &&
-                <Button onClick={handleProceed} className="bg-yellow hover:bg-yellow">
+                range.rangeStart  &&
+                <Button onClick={handleProceed} className="bg-yellow hover:bg-yellow-hover p-6">
                     Continue
                 </Button>
             }

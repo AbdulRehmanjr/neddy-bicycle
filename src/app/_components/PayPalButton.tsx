@@ -23,16 +23,13 @@ export const PayPalButton = () => {
 
     const emailSender = api.email.buyerMail.useMutation()
 
-
     useEffect(() => {
-
-        if (bookingData && paypalId) 
+        if (bookingData && paypalId)
             setIsReady(true)
-
     }, [bookingData, paypalId])
 
     if (!isReady)
-        return null
+        return <PayPalButtons disabled={true} />
 
 
     const createOrder = async (_data: CreateOrderData) => {
@@ -48,10 +45,11 @@ export const PayPalButton = () => {
         const response: Response = await fetch("/api/order", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
+                "Content-Types": "application/json",
             },
             body: JSON.stringify(requestBody)
         })
+
         const order = await response.json()
 
         return order.id;
@@ -65,20 +63,20 @@ export const PayPalButton = () => {
         router.push('/success')
 
         emailSender.mutate({
-            firstName:bookingData.firstName,
-            lastName:bookingData.lastName,
-            email:bookingData.email,
-            phone:bookingData.phone,
-            men:bookingData.men,
-            ladies:bookingData.ladies,
-            kids:bookingData.kids,
-            amount:bookingData.amount,
-            duration:bookingData.duration,
-            startDate:bookingData.startDate ?? '',
-            endDate:bookingData.endDate??'',
-            orderId:data.orderID,
+            firstName: bookingData.firstName,
+            lastName: bookingData.lastName,
+            email: bookingData.email,
+            phone: bookingData.phone,
+            men: bookingData.men,
+            ladies: bookingData.ladies,
+            kids: bookingData.kids,
+            amount: bookingData.amount,
+            duration: bookingData.duration,
+            startDate: bookingData.startDate ?? '',
+            endDate: bookingData.endDate ?? '',
+            orderId: data.orderID,
         })
-        
+
         await fetch("/api/order/capture", {
             method: "POST",
             headers: {
@@ -86,13 +84,13 @@ export const PayPalButton = () => {
             },
             body: JSON.stringify({
                 orderId: data.orderID,
-                bookingData : bookingData
+                bookingData: bookingData
             })
         })
     }
 
-    const cancelOrder = (_data:Record<string,unknown>): void => {
-        return 
+    const cancelOrder = (_data: Record<string, unknown>): void => {
+        return
     }
 
     return (

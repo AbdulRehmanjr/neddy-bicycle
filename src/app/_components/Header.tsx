@@ -5,11 +5,8 @@ import Image from "next/image"
 export const Header = ()=>{
 
     return (
-        <header className="col-span-12 flex items-center gap-14 p-2">
+        <header className="col-span-12 flex items-center px-10 py-5">
             <Image src={'/logo.png'} alt="neddy logo" width={72} height={72}/>
-            <p className="text-grey text-5xl font-libre font-extrabold tracking-tight">
-                Nedy&apos;s Bicycle Rental
-            </p>
         </header>
     )
 }
