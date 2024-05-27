@@ -57,9 +57,9 @@ export const BikeCalendar = () => {
         if (duration == 7)
             subTotal = 7 * (data.men * prices['2'] + data.ladies * prices['2'] + data.kids * prices['2'])
         else if (duration >= 2)
-            subTotal = duration * (data.men * prices['2'] + data.ladies * prices['2'] + data.kids * prices['2'])
+            subTotal = (data.men * prices['2'] + data.ladies * prices['2'] + data.kids * prices['2'])
         else
-            subTotal = duration * (data.men * prices['1'] + data.ladies * prices['1'] + data.kids * prices['1'])
+            subTotal = (data.men * prices['1'] + data.ladies * prices['1'] + data.kids * prices['1'])
 
         return subTotal
     }
@@ -97,10 +97,10 @@ export const BikeCalendar = () => {
         const isPast = date.isBefore(dayjs(), 'day')
         const isStart = range.rangeStart?.isSame(date, "day");
         const isEnd = range.rangeEnd?.isSame(date, "day");
-        const currentPrice = duration <= 1 ? 150 : 100
+        const currentPrice = calculatePrice(duration)
 
         return (
-            <td className='relative border-[1px] border-gray-300 w-[1.5rem] h-[3rem] md:w-[4rem] md:h-[6rem]'>
+            <td className='relative border-[1px] border-gray-300 w-[1.3rem] h-[4rem] md:w-[4rem] md:h-[6rem]'>
                 <button type="button"
                     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
                     className={`absolute top-0 left-0 w-full h-full ${(isInRange(date) || isStart || isEnd) && 'bg-yellow text-white'}`}
@@ -111,7 +111,7 @@ export const BikeCalendar = () => {
                         <span className="font-bold">{date.date()}</span>
                         {!isPast
                             &&
-                            <p className="text-sm ">
+                            <p className="text-xs">
                                 <span>{currentPrice}</span> <span>SCR</span>
                             </p>
                         }
@@ -132,13 +132,13 @@ export const BikeCalendar = () => {
             <table className='rounded-md'>
                 <thead>
                     <tr className='text-xs sm:text-sm md:text-base lg:text-lg '>
-                        <th className="p-2 min-w-[4rem] md:min-w-[6rem]">Sun</th>
-                        <th className="p-2 min-w-[4rem] md:min-w-[6rem]">Mon</th>
-                        <th className="p-2 min-w-[4rem] md:min-w-[6rem]">Tue</th>
-                        <th className="p-2 min-w-[4rem] md:min-w-[6rem]">Wed</th>
-                        <th className="p-2 min-w-[4rem] md:min-w-[6rem]">Thu</th>
-                        <th className="p-2 min-w-[4rem] md:min-w-[6rem]">Fri</th>
-                        <th className="p-2 min-w-[4rem] md:min-w-[6rem]">Sat</th>
+                        <th className="p-2 min-w-[3.2rem] md:min-w-[6rem]">Sun</th>
+                        <th className="p-2 min-w-[3.2rem] md:min-w-[6rem]">Mon</th>
+                        <th className="p-2 min-w-[3.2rem] md:min-w-[6rem]">Tue</th>
+                        <th className="p-2 min-w-[3.2rem] md:min-w-[6rem]">Wed</th>
+                        <th className="p-2 min-w-[3.2rem] md:min-w-[6rem]">Thu</th>
+                        <th className="p-2 min-w-[3.2rem] md:min-w-[6rem]">Fri</th>
+                        <th className="p-2 min-w-[3.2rem] md:min-w-[6rem]">Sat</th>
                     </tr>
                 </thead>
                 <tbody>

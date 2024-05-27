@@ -5,12 +5,14 @@ import { GoBack } from "~/app/_components/GoBack";
 export default function BookingPage() {
 
     return (
-        <section className="col-span-12 grid grid-cols-2 content-center place-self-center gap-20 min-h-[calc(100vh_-_124px)]">
-            <div className="col-span-2 container justify-start">
+        <section className="col-span-12 flex flex-col gap-14 min-h-[calc(100vh_-_124px)] mb-16">
+            <div className="flex flex-col md:flex-row gap-20 p-6">
+                <BookingForm />
+                <AmountDetail />
+            </div>
+            <div className="container justify-start">
                 <GoBack />
             </div>
-            <BookingForm />
-            <AmountDetail />
         </section>
     )
 }

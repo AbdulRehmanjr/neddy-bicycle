@@ -21,7 +21,7 @@ export const GuesthouseInput = () => {
 
     return (
         <div className="flex flex-col items-center gap-4">
-            <Input className="text-xl p-6" placeholder="Enter your guesthouse" onChange={(e) => debouncedInputHandler(e.target.value)} />
+            <Input className="text-xl p-6 w-[20rem]" placeholder="Enter your guesthouse name" onChange={(e) => debouncedInputHandler(e.target.value)} />
             <Button className="bg-yellow hover:bg-yellow-hover w-fit" onClick={()=>router.push('arrivalInfo')}>
                 Continue
             </Button>

@@ -21,7 +21,7 @@ export const ArrivalInfoInput = () => {
 
     return (
         <div className="flex flex-col items-center gap-4">
-            <Input type="time" className="block text-xl p-6"  onChange={(e) => debouncedInputHandler(e.target.value)} />
+            <Input type="time" className="block text-xl p-6 w-[20rem]" onChange={(e) => debouncedInputHandler(e.target.value)} />
             <Button className="bg-yellow hover:bg-yellow-hover w-fit" onClick={()=>router.push('booking')}>
                 Continue
             </Button>
