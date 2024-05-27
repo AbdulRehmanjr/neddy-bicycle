@@ -10,7 +10,7 @@ export const AmountDetail = () => {
 
     return (
         <div className="flex flex-col gap-4 text-yellow">
-            <h1 className="text-4xl font-extrabold font-libre">Rental overview</h1>
+            <h1 className="text-4xl font-idm">Rental overview</h1>
             <div className="flex flex-col gap-2 text-gray-500">
                 <p className="flex gap-2">
                     <span>Start date:</span>

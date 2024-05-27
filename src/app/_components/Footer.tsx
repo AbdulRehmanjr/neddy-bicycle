@@ -9,7 +9,7 @@ export const Footer = () => {
 
     return (
         <footer className="col-span-12 text-ibm bg-yellow p-12">
-            <div className="container flex justify-between items-center text-xs p-10">
+            <div className="container flex flex-col md:flex-row justify-between items-center text-xs p-10">
                 <div className="p-6">
                     <Image src={'/logo.png'} alt="neddy logo" width={112} height={112} />
                 </div>
