@@ -9,12 +9,15 @@ import { Button } from "~/components/ui/button"
 import { api } from "~/trpc/react"
 import { useAtom, useSetAtom } from "jotai/react"
 import { bookingId, selectionAtom, triggerAtom } from "~/store"
+import { Textarea } from "~/components/ui/textarea"
 
 const formSchema = z.object({
     firstName: z.string({ required_error: 'Field is required.' }),
     lastName: z.string({ required_error: 'Field is required.' }),
     email: z.string({ required_error: 'Field is required.' }).email({ message: "Invalid email address" }),
     phone: z.string({ required_error: 'Field is required.' }),
+    additional :z.string({ required_error: 'Field is required.' }),
+    info:z.string({ required_error: 'Field is required.' })
 })
 
 export const BookingForm = () => {
@@ -61,13 +64,15 @@ export const BookingForm = () => {
             pickup: bookingData.location ?? 0,
             guesthouse: bookingData.guesthouse ?? '',
             arrivalTime: bookingData.arrivalTime ?? '',
+            additional:data.additional,
+            info:data.info,
         })
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(formSubmitted)} className={`grid grid-cols-2 gap-3 font-bold text-mid-blue `}>
-                <h1 className="col-span-2 text-4xl font-idm font-normal  text-yellow">Personal Information</h1>
+            <form onSubmit={form.handleSubmit(formSubmitted)} className={`grid grid-cols-2 gap-3  text-mid-blue `}>
+                <h1 className="col-span-2 text-4xl font-idm text-yellow">Personal Information</h1>
                 <FormField
                     control={form.control}
                     name="firstName"
@@ -115,6 +120,32 @@ export const BookingForm = () => {
                             <FormLabel>Phone no.</FormLabel>
                             <FormControl>
                                 <Input placeholder="Enter the phone no." {...field} value={field.value ?? ''} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="info"
+                    render={({ field }) => (
+                        <FormItem className="col-span-2 ">
+                            <FormLabel>How did you get to know us?</FormLabel>
+                            <FormControl>
+                                <Textarea placeholder="how did you get to know us?" {...field} value={field.value ?? ''}  />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="additional"
+                    render={({ field }) => (
+                        <FormItem className="col-span-2 ">
+                            <FormLabel>Additional information</FormLabel>
+                            <FormControl>
+                                <Textarea placeholder="Write additional information" {...field} value={field.value ?? ''}  />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
