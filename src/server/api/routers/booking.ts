@@ -27,7 +27,9 @@ export const BookingRouter = createTRPCRouter({
             men: z.number(),
             ladies: z.number(),
             kids: z.number(),
-            pickup: z.number()
+            pickup: z.number(),
+            additional:z.string(),
+            info:z.string()
         }))
         .mutation(async ({ ctx, input }) => {
             try {
@@ -55,6 +57,8 @@ export const BookingRouter = createTRPCRouter({
                         ladies: input.ladies,
                         kids: input.kids,
                         pickup: input.pickup,
+                        addtional: input.additional,
+                        info:input.info,
                         payPalId: payPalBoookingInfo.paypalBoookingId
                     }
                 })
