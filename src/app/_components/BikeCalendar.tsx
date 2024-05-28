@@ -111,7 +111,7 @@ export const BikeCalendar = () => {
                         <span className="font-bold">{date.date()}</span>
                         {!isPast
                             &&
-                            <p className="text-xs">
+                            <p className="text-xs flex flex-col">
                                 <span>{currentPrice}</span> <span>SCR</span>
                             </p>
                         }

@@ -22,6 +22,7 @@ export const PayPalButton = () => {
     const [isReady, setIsReady] = useState(false)
 
     const emailSender = api.email.buyerMail.useMutation()
+    const sellerEmail = api.email.sellerMail.useMutation()
 
     useEffect(() => {
         if (bookingData && paypalId)
@@ -63,6 +64,21 @@ export const PayPalButton = () => {
         router.push('/success')
 
         emailSender.mutate({
+            firstName: bookingData.firstName,
+            lastName: bookingData.lastName,
+            email: bookingData.email,
+            phone: bookingData.phone,
+            men: bookingData.men,
+            ladies: bookingData.ladies,
+            kids: bookingData.kids,
+            amount: bookingData.amount,
+            duration: bookingData.duration,
+            startDate: bookingData.startDate ?? '',
+            endDate: bookingData.endDate ?? '',
+            orderId: data.orderID,
+        })
+
+        sellerEmail.mutate({
             firstName: bookingData.firstName,
             lastName: bookingData.lastName,
             email: bookingData.email,
