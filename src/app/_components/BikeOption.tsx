@@ -20,7 +20,7 @@ export const BikeOptions = () => {
                         <Image width={1080} height={810} className="w-full h-full rounded-md brightness-75" src="/man.jpeg" alt="bike image" />
                         <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center">
                             <h2 className="text-2xl md:text-4xl">Gentlemen bikes</h2>
-                            <h3 className="text-lg md:text-2xl">150 SCR</h3>
+                            <h3 className="text-lg md:text-2xl">10 €</h3>
                         </div>
                     </div>
                     <div className="flex justify-center items-center gap-6">
@@ -45,7 +45,7 @@ export const BikeOptions = () => {
                         <Image width={1080} height={810} className="w-full h-full rounded-md brightness-75" src="/lady.jpeg" alt="bike image" />
                         <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center">
                             <h2 className="text-2xl md:text-4xl">Ladies bikes</h2>
-                            <h3 className="text-lg md:text-2xl">150 SCR</h3>
+                            <h3 className="text-lg md:text-2xl">10 €</h3>
                         </div>
                     </div>
                     <div className="flex justify-center items-center gap-6">
@@ -70,7 +70,7 @@ export const BikeOptions = () => {
                         <Image width={1080} height={810} className="w-full h-full rounded-md brightness-75" src="/kids.jpg" alt="bike image" />
                         <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center">
                             <h2 className="text-2xl md:text-4xl">Kids bikes</h2>
-                            <h3 className="text-lg md:text-2xl">150 SCR</h3>
+                            <h3 className="text-lg md:text-2xl">10 €</h3>
                         </div>
                     </div>
                     <div className="flex justify-center items-center gap-6">

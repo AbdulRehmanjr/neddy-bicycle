@@ -72,7 +72,7 @@ export const BookingForm = () => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(formSubmitted)} className={`grid grid-cols-2 gap-3  text-mid-blue `}>
-                <h1 className="col-span-2 text-4xl font-idm text-yellow">Personal Information</h1>
+                <h1 className="col-span-2 text-4xl font-ibm text-yellow">Personal Information</h1>
                 <FormField
                     control={form.control}
                     name="firstName"
