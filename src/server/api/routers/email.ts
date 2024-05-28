@@ -182,7 +182,7 @@ export const EmailRouter = createTRPCRouter({
 
                 const email: Mail.Options = {
                     from: `${sender}`,
-                    to: `${input.email}`,
+                    to: `pamina.z@aon.at`,
                     subject: "Neddy Bicycle Booking Recieved",
                     html: `  
                 <table
@@ -196,13 +196,14 @@ export const EmailRouter = createTRPCRouter({
                 <tr>
                     <td style="padding: 10px;">
                         <h2 style="margin-bottom: 10px;">Booking confirmation</h2>
-                        <p>Dear seller,</p>
-                        <p>New order received from neddy's bicycle</p>
+                        <p>Dear Nedy,</p>
+                        <p>You have received a new bicycle rental booking:</p>
+                        
                         <p>
-                            <span style="font-weight:bold;">Your confirmation number is: </span>
+                            <span style="font-weight:bold;">Booking number: </span>
                             <span>${input.orderId}</span>
                         </p>
-                        <p style="font-size:18px;">Your order details are below:</p>
+                        <p style="margin-top:10px; margin-bottom:10px;">PERSONAL DATA</p>
                         <p>
                             <span style="font-weight:bold;">Full name: </span>
                             <span>${input.firstName} ${input.lastName}</span>
@@ -215,6 +216,7 @@ export const EmailRouter = createTRPCRouter({
                             <span style="font-weight:bold;">Phone no.: </span>
                             <span>${input.phone}</span>
                         </p>
+                        <p style="margin-top:10px; margin-bottom:10px;">BOOKING DETAIL</p>
                         <p>
                             <span style="font-weight:bold;">Start date: </span>
                             <span>${input.startDate}</span>
@@ -239,17 +241,23 @@ export const EmailRouter = createTRPCRouter({
                             <span style="font-weight:bold;">Kids bicycles: </span>
                             <span>${input.kids}</span>
                         </p>
+                        <p style="margin-top:10px; margin-bottom:10px;">PAYMENT DETAILS</p>
                         <p>
                             <span style="font-weight:bold;">Total amount: </span>
                             <span>${input.amount} €</span>
+                        </p>
+                        <p>
+                            <span style="font-weight:bold;">Total amount: </span>
+                            <span>${input.amount} €</span>
+                        </p>
+                        <p>
+                            <span style="font-weight:bold;">Paid: </span>
+                            <span>PayPal</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="padding: 10px;">
-                        <p>Please feel free to reach out to us if you need to cancel or reschedule your booking. Cancellation
-                            policy is attached below.</p>
-                        <p style="margin-bottom:10px;">We are looking forward to seeing you soon.</p>
                         <p style="margin-bottom:10px;">Best regards,</p>
                         <h2 style="margin-bottom:10px;">Nedy’s Bicycle Rental</h2>
                     </td>
