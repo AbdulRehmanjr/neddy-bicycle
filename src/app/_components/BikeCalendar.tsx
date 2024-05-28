@@ -21,7 +21,7 @@ export const BikeCalendar = () => {
     const [data, setData] = useAtom(selectionAtom)
     const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs())
     const [range, setRange] = useState<RangeProps>({ rangeStart: null, rangeEnd: null })
-    const [duration, setDuration] = useState<number>(1)
+    const [durations, setDuration] = useState<number>(1)
 
     const currentMonth: Dayjs[][] = useMemo(() => {
         const currentMonth = selectedDate || dayjs()
@@ -51,16 +51,15 @@ export const BikeCalendar = () => {
     const calculatePrice = (duration: number) => {
         let subTotal = 0
         const prices = {
-            1: 150,
-            2: 100,
+            1: 10,
+            2: 7,
         }
         if (duration == 7)
-            subTotal = 7 * (data.men * prices['2'] + data.ladies * prices['2'] + data.kids * prices['2'])
+            subTotal = (data.men * prices['2'] + data.ladies * prices['2'] + data.kids * prices['2'])
         else if (duration >= 2)
             subTotal = (data.men * prices['2'] + data.ladies * prices['2'] + data.kids * prices['2'])
         else
             subTotal = (data.men * prices['1'] + data.ladies * prices['1'] + data.kids * prices['1'])
-
         return subTotal
     }
 
@@ -74,8 +73,15 @@ export const BikeCalendar = () => {
             setRange((prev) => ({ ...prev, rangeEnd: date }))
             const duration = dayjs(date).diff(dayjs(range.rangeStart), 'days') + 1
             const price = calculatePrice(duration)
-            setDuration(() => duration)
-            setData((prev) => ({ ...prev, endDate: date.format('YYYY-MM-DD'), duration: duration, amount: price }))
+            if (duration == 7) {
+                setDuration(() => duration + 1)
+                const newRangeEnd = dayjs(date).add(1, 'day')
+                setData((prev) => ({ ...prev, endDate: newRangeEnd.format('YYYY-MM-DD'), duration: 8, amount: price * duration }))
+            } else {
+                setDuration(() => duration)
+                setData((prev) => ({ ...prev, endDate: date.format('YYYY-MM-DD'), duration: duration, amount: price * duration }))
+            }
+           
         }
         else {
             setRange(() => ({ rangeStart: null, rangeEnd: null }))
@@ -97,7 +103,7 @@ export const BikeCalendar = () => {
         const isPast = date.isBefore(dayjs(), 'day')
         const isStart = range.rangeStart?.isSame(date, "day");
         const isEnd = range.rangeEnd?.isSame(date, "day");
-        const currentPrice = calculatePrice(duration)
+        const currentPrice = calculatePrice(durations)
 
         return (
             <td className='relative border-[1px] border-gray-300 w-[1.3rem] h-[4rem] md:w-[4rem] md:h-[6rem]'>
@@ -111,8 +117,8 @@ export const BikeCalendar = () => {
                         <span className="font-bold">{date.date()}</span>
                         {!isPast
                             &&
-                            <p className="text-xs flex flex-col">
-                                <span>{currentPrice}</span> <span>SCR</span>
+                            <p className="text-xs ">
+                                <span>{currentPrice}</span> <span>€</span>
                             </p>
                         }
                         {/* {isReserved && <span>N/A</span>} */}

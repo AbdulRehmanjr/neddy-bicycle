@@ -10,7 +10,7 @@ export const AmountDetail = () => {
 
     return (
         <div className="flex flex-col gap-4 text-yellow">
-            <h1 className="text-4xl font-idm">Rental overview</h1>
+            <h1 className="text-4xl font-ibm">Rental overview</h1>
             <div className="flex flex-col gap-2 text-gray-500">
                 <p className="flex gap-2">
                     <span>Start date:</span>
@@ -22,7 +22,7 @@ export const AmountDetail = () => {
                 </p>
                 <p className="flex gap-2">
                     <span>Duration:</span>
-                    <span>{data.duration}</span>
+                    <span>{data.duration} days</span>
                 </p>
                 <p className="flex gap-2">
                     <span>Pickup location:</span>
@@ -42,7 +42,7 @@ export const AmountDetail = () => {
                 </p>
                 <p className="flex font-extrabold gap-2 border-y-2 p-3">
                     <span>Price:</span>
-                    <span>{data.amount} SCR</span>
+                    <span>{data.amount} €</span>
                 </p>
                 <PayPalButton />
             </div>
