@@ -54,12 +54,12 @@ export const BikeCalendar = () => {
             1: 10,
             2: 7,
         }
-        if (duration == 7)
-            subTotal = (data.men * prices['2'] + data.ladies * prices['2'] + data.kids * prices['2'])
-        else if (duration >= 2)
+
+        if (duration >= 2)
             subTotal = (data.men * prices['2'] + data.ladies * prices['2'] + data.kids * prices['2'])
         else
             subTotal = (data.men * prices['1'] + data.ladies * prices['1'] + data.kids * prices['1'])
+
         return subTotal
     }
 
@@ -73,15 +73,15 @@ export const BikeCalendar = () => {
             setRange((prev) => ({ ...prev, rangeEnd: date }))
             const duration = dayjs(date).diff(dayjs(range.rangeStart), 'days') + 1
             const price = calculatePrice(duration)
-            if (duration == 7) {
+            if (duration >= 7) {
                 setDuration(() => duration + 1)
                 const newRangeEnd = dayjs(date).add(1, 'day')
-                setData((prev) => ({ ...prev, endDate: newRangeEnd.format('YYYY-MM-DD'), duration: 8, amount: price * duration }))
+                setData((prev) => ({ ...prev, endDate: newRangeEnd.format('YYYY-MM-DD'), duration: duration + 1, amount: price * duration }))
             } else {
                 setDuration(() => duration)
                 setData((prev) => ({ ...prev, endDate: date.format('YYYY-MM-DD'), duration: duration, amount: price * duration }))
             }
-           
+
         }
         else {
             setRange(() => ({ rangeStart: null, rangeEnd: null }))

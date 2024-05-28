@@ -16,8 +16,8 @@ const formSchema = z.object({
     lastName: z.string({ required_error: 'Field is required.' }),
     email: z.string({ required_error: 'Field is required.' }).email({ message: "Invalid email address" }),
     phone: z.string({ required_error: 'Field is required.' }),
-    additional :z.string({ required_error: 'Field is required.' }),
-    info:z.string({ required_error: 'Field is required.' })
+    additional: z.optional(z.string({ required_error: 'Field is required.' })),
+    info: z.optional(z.string({ required_error: 'Field is required.' }))
 })
 
 export const BookingForm = () => {
@@ -64,8 +64,8 @@ export const BookingForm = () => {
             pickup: bookingData.location ?? 0,
             guesthouse: bookingData.guesthouse ?? '',
             arrivalTime: bookingData.arrivalTime ?? '',
-            additional:data.additional,
-            info:data.info,
+            additional: data.additional ?? '',
+            info: data.info ?? '',
         })
     }
 
@@ -132,7 +132,7 @@ export const BookingForm = () => {
                         <FormItem className="col-span-2 ">
                             <FormLabel>How did you get to know us?</FormLabel>
                             <FormControl>
-                                <Textarea placeholder="how did you get to know us?" {...field} value={field.value ?? ''}  />
+                                <Textarea placeholder="how did you get to know us?" {...field} value={field.value ?? ''} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -145,7 +145,7 @@ export const BookingForm = () => {
                         <FormItem className="col-span-2 ">
                             <FormLabel>Additional information</FormLabel>
                             <FormControl>
-                                <Textarea placeholder="Write additional information" {...field} value={field.value ?? ''}  />
+                                <Textarea placeholder="Write additional information" {...field} value={field.value ?? ''} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
