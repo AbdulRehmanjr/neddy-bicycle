@@ -66,8 +66,9 @@ export const BikeCalendar = () => {
     const handleDateClick = (date: Dayjs) => {
 
         if (range.rangeStart === null) {
+            const price = calculatePrice(1)
             setRange((prev) => ({ ...prev, rangeStart: date, rangeEnd: date }))
-            setData((prev) => ({ ...prev, startDate: date.format('YYYY-MM-DD'), endDate: date.format('YYYY-MM-DD') }))
+            setData((prev) => ({ ...prev, startDate: date.format('YYYY-MM-DD'), endDate: date.format('YYYY-MM-DD'), duration: 1,amount:price }))
         }
         else if (!date.isBefore(range.rangeStart, "day")) {
             setRange((prev) => ({ ...prev, rangeEnd: date }))

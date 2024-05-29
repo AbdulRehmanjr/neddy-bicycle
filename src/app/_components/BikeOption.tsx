@@ -67,7 +67,7 @@ export const BikeOptions = () => {
                 </div>
                 <div className="flex flex-col gap-6 hover:cursor-pointer">
                     <div className="relative bg-white text-white rounded-md w-[18rem] h-[13rem] md:w-[25rem] md:h-[20rem] " >
-                        <Image width={1080} height={810} className="w-full h-full rounded-md brightness-75" src="/kids.jpg" alt="bike image" />
+                        <Image width={1080} height={810} className="w-full h-full rounded-md brightness-75" src="/kids_1.jpg" alt="bike image" />
                         <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center">
                             <h2 className="text-2xl md:text-4xl">Kids bikes</h2>
                             <h3 className="text-lg md:text-2xl">10 €</h3>

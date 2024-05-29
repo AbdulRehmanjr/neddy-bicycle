@@ -10,6 +10,7 @@ import { api } from "~/trpc/react"
 import { useAtom, useSetAtom } from "jotai/react"
 import { bookingId, selectionAtom, triggerAtom } from "~/store"
 import { Textarea } from "~/components/ui/textarea"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
     firstName: z.string({ required_error: 'Field is required.' }),
@@ -22,6 +23,7 @@ const formSchema = z.object({
 
 export const BookingForm = () => {
 
+    const router = useRouter()
     const [bookingData, setBookingData] = useAtom(selectionAtom)
     const setTrigger = useSetAtom(triggerAtom)
     const setBookingId = useSetAtom(bookingId)
@@ -33,8 +35,8 @@ export const BookingForm = () => {
     const createOrder = api.booking.create.useMutation({
         onSuccess: (data: string) => {
             setTrigger(false)
-            form.reset()
             setBookingId(() => data)
+            router.refresh()
         }
     })
 
