@@ -159,6 +159,8 @@ export const EmailRouter = createTRPCRouter({
             kids: z.number(),
             amount: z.number(),
             duration: z.number(),
+            pickup: z.string(),
+            arrivalTime: z.string()
         }))
         .mutation(async ({ input }) => {
 
@@ -183,27 +185,22 @@ export const EmailRouter = createTRPCRouter({
                 const email: Mail.Options = {
                     from: `${sender}`,
                     to: `pamina.z@aon.at`,
-                    subject: "Neddy Bicycle Booking Recieved",
+                    subject: "Nedy‘s Bicycle booking received",
                     html: `  
                 <table
                 style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse; font-family: Arial, sans-serif;">
-                <tr>
-                    <td style="background-color: rgb(243,244,246); padding: 15px; text-align: center;">
-                        <img src="https://res.cloudinary.com/dbjiys9se/image/upload/v1716368218/logo_e4lgrd.png"
-                            alt="Neddy's Bicycle" style="width: 100px;">
-                    </td>
-                </tr>
                 <tr>
                     <td style="padding: 10px;">
                         <h2 style="margin-bottom: 10px;">Booking confirmation</h2>
                         <p>Dear Nedy,</p>
                         <p>You have received a new bicycle rental booking:</p>
-                        
                         <p>
                             <span style="font-weight:bold;">Booking number: </span>
                             <span>${input.orderId}</span>
                         </p>
+                        <span style="display: block; width: 100%; height: 1px; background-color: #ddd;"></span>
                         <p style="margin-top:10px; margin-bottom:10px;">PERSONAL DATA</p>
+                        <span style="display: block; width: 100%; height: 1px; background-color: #ddd;"></span>
                         <p>
                             <span style="font-weight:bold;">Full name: </span>
                             <span>${input.firstName} ${input.lastName}</span>
@@ -216,7 +213,9 @@ export const EmailRouter = createTRPCRouter({
                             <span style="font-weight:bold;">Phone no.: </span>
                             <span>${input.phone}</span>
                         </p>
+                        <span style="display: block; width: 100%; height: 1px; background-color: #ddd;"></span>
                         <p style="margin-top:10px; margin-bottom:10px;">BOOKING DETAIL</p>
+                        <span style="display: block; width: 100%; height: 1px; background-color: #ddd;"></span>
                         <p>
                             <span style="font-weight:bold;">Start date: </span>
                             <span>${input.startDate}</span>
@@ -230,6 +229,14 @@ export const EmailRouter = createTRPCRouter({
                             <span>${input.duration} days</span>
                         </p>
                         <p>
+                            <span style="font-weight:bold;">Pickup: </span>
+                            <span>${input.pickup}</span>
+                         </p>
+                        <p>
+                            <span style="font-weight:bold;">Arrival time: </span>
+                            <span>${input.men}</span>
+                        </p>
+                        <p>
                             <span style="font-weight:bold;">Gentlemen bicycles: </span>
                             <span>${input.men}</span>
                         </p>
@@ -241,11 +248,9 @@ export const EmailRouter = createTRPCRouter({
                             <span style="font-weight:bold;">Kids bicycles: </span>
                             <span>${input.kids}</span>
                         </p>
+                        <span style="display: block; width: 100%; height: 1px; background-color: #ddd;"></span>
                         <p style="margin-top:10px; margin-bottom:10px;">PAYMENT DETAILS</p>
-                        <p>
-                            <span style="font-weight:bold;">Total amount: </span>
-                            <span>${input.amount} €</span>
-                        </p>
+                        <span style="display: block; width: 100%; height: 1px; background-color: #ddd;"></span>
                         <p>
                             <span style="font-weight:bold;">Total amount: </span>
                             <span>${input.amount} €</span>
@@ -256,22 +261,6 @@ export const EmailRouter = createTRPCRouter({
                         </p>
                     </td>
                 </tr>
-                <tr>
-                    <td style="padding: 10px;">
-                        <p style="margin-bottom:10px;">Best regards,</p>
-                        <h2 style="margin-bottom:10px;">Nedy’s Bicycle Rental</h2>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color: rgb(243,244,246);  padding: 15px; text-align: center; color:black">
-                        <img src="https://res.cloudinary.com/dbjiys9se/image/upload/v1716368218/logo_e4lgrd.png"
-                            alt="Neddy Bicycle" style="width: 100px;">
-                        <p>Nedy’s Bicycle Rental</p>
-                        <p>La Passe, La Digue</p>
-                        <p>Seychelles</p>
-                        <p>rayenradegonde@gmail.com</p>
-                        <p>+248 2 54 61 93</p>
-                    </td>
                 </tr>
             </table>`,
                     attachments: attachments
