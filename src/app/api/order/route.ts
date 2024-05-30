@@ -16,7 +16,6 @@ export async function POST(req: Request) {
 
         const { paypal, amount } = await req.json()
 
-        console.log('Amount ar backend',amount)
         const payPalInfo = await db.payPalInfo.findUniqueOrThrow({ where: { id: env.PAYPAL_SELLER_CUSTOM_ID } })
 
         const username = env.PAYPAL_CLIENT
