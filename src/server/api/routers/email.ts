@@ -30,6 +30,9 @@ export const EmailRouter = createTRPCRouter({
             kids: z.number(),
             amount: z.number(),
             duration: z.number(),
+            guesthouse: z.string(),
+            pickup:z.string(),
+            arrivalTime:z.string()
         }))
         .mutation(async ({ input }) => {
 
@@ -94,6 +97,18 @@ export const EmailRouter = createTRPCRouter({
                                 <span style="font-weight:bold;">End date: </span>
                                 <span>${input.endDate}</span>
                             </p>
+                            <p>
+                            <span style="font-weight:bold;">Pickup: </span>
+                            <span>${input.pickup}</span>
+                        </p>
+                            <p>
+                            <span style="font-weight:bold;">Guesthouse: </span>
+                            <span>${input.guesthouse}</span>
+                        </p>
+                        <p>
+                            <span style="font-weight:bold;">ArrivalTime: </span>
+                            <span>${input.arrivalTime}</span>
+                        </p>
                             <p>
                                 <span style="font-weight:bold;">Duration: </span>
                                 <span>${input.duration} days</span>
@@ -160,7 +175,8 @@ export const EmailRouter = createTRPCRouter({
             amount: z.number(),
             duration: z.number(),
             pickup: z.string(),
-            arrivalTime: z.string()
+            arrivalTime: z.string(),
+            guesthouse: z.string()
         }))
         .mutation(async ({ input }) => {
 
@@ -231,7 +247,15 @@ export const EmailRouter = createTRPCRouter({
                         <p>
                             <span style="font-weight:bold;">Pickup: </span>
                             <span>${input.pickup}</span>
-                         </p>
+                        </p>
+                        <p>
+                            <span style="font-weight:bold;">Guesthouse: </span>
+                            <span>${input.guesthouse}</span>
+                        </p>
+                        <p>
+                            <span style="font-weight:bold;">ArrivalTime: </span>
+                            <span>${input.arrivalTime}</span>
+                        </p>
                         <p>
                             <span style="font-weight:bold;">Arrival time: </span>
                             <span>${input.men}</span>

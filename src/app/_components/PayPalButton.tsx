@@ -25,7 +25,7 @@ export const PayPalButton = () => {
     const sellerEmail = api.email.sellerMail.useMutation()
 
     useEffect(() => {
-        if (bookingData.amount && paypalId != '') 
+        if (bookingData.amount && paypalId != '')
             setIsReady(() => true)
     }, [bookingData, paypalId])
 
@@ -37,7 +37,7 @@ export const PayPalButton = () => {
             paypal: paypal,
             amount: amount,
         }
-        
+
         const response: Response = await fetch("/api/order", {
             method: "POST",
             headers: {
@@ -58,7 +58,7 @@ export const PayPalButton = () => {
 
         router.push('/success')
 
-        const emailObject ={
+        const emailObject = {
             firstName: bookingData.firstName,
             lastName: bookingData.lastName,
             email: bookingData.email,
@@ -71,8 +71,11 @@ export const PayPalButton = () => {
             startDate: bookingData.startDate ?? '',
             endDate: bookingData.endDate ?? '',
             orderId: data.orderID,
+            guesthouse:bookingData.guesthouse ?? '',
+            arrivalTime: bookingData.arrivalTime ?? '',
+            pickup: bookingData.location ==1 ? 'Jetty': 'Guesthouse'
         }
-        
+
         emailSender.mutate(emailObject)
         sellerEmail.mutate(emailObject)
 
@@ -91,12 +94,12 @@ export const PayPalButton = () => {
     const cancelOrder = (_data: Record<string, unknown>): void => {
         return
     }
-        return (
-            <PayPalButtons
-                disabled={isDisabled || !isReady}
-                createOrder={(data, _action) => createOrder(data)}
-                onApprove={(data, _actions) => approveOrder(data)}
-                onCancel={(data, _action) => cancelOrder(data)}
-            />
-        )
+    return (
+        <PayPalButtons
+            disabled={isDisabled || !isReady}
+            createOrder={(data, _action) => createOrder(data)}
+            onApprove={(data, _actions) => approveOrder(data)}
+            onCancel={(data, _action) => cancelOrder(data)}
+        />
+    )
 }
