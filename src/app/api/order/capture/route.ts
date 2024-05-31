@@ -1,5 +1,5 @@
 import { TRPCClientError } from "@trpc/client";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { env } from "~/env";
 import { calendar } from "~/server/config/calendar";
 import { authClient } from "~/server/config/oauthClient";
@@ -63,6 +63,13 @@ export async function POST(req: Request) {
             console.error(error.message)
             throw new Error(error.message)
         }
+        else if (error instanceof AxiosError) {
+            console.error(error.message)
+            console.error(error.response?.data)
+            console.log(error.cause)
+            throw new Error(error.message)
+        }
+        console.error(error)
         throw new Error("Something went wrong")
     }
 
