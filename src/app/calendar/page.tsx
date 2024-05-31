@@ -10,7 +10,7 @@ export default function CalendarPage() {
             <h1 className={`text-center text-3xl md:text-5xl font-ibm text-yellow mb-6 md:mb-16`}>
                 Choose your rental period
             </h1>
-            <div className="flex flex-col items-center gap-2 text-dim-grey text-sm md:text-lg p-4">
+            <div className="flex flex-col items-center gap-2 font-libre text-dim-grey text-sm md:text-lg p-4">
                 <p>7+1 days discount - rent bicycles for 7</p>
                 <p>or more days and you will get one day for free</p>
             </div>

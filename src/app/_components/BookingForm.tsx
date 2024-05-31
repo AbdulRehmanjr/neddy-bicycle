@@ -49,6 +49,8 @@ export const BookingForm = () => {
                 lastName: data.lastName,
                 email: data.email,
                 phone: data.phone,
+                additional: data.additional ?? '',
+                info: data.info ?? '',
             }
         ))
         createOrder.mutate({

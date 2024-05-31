@@ -13,6 +13,8 @@ type SelectionProps = {
     phone: string
     guesthouse: string
     arrivalTime: string
+    additional: string
+    info: string
 }
 
 type GoogleTokenProps = {
