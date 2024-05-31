@@ -31,8 +31,9 @@ export const EmailRouter = createTRPCRouter({
             amount: z.number(),
             duration: z.number(),
             guesthouse: z.string(),
-            pickup:z.string(),
-            arrivalTime:z.string()
+            pickup: z.string(),
+            arrivalTime: z.string(),
+            paymentId: z.string()
         }))
         .mutation(async ({ input }) => {
 
@@ -176,7 +177,8 @@ export const EmailRouter = createTRPCRouter({
             duration: z.number(),
             pickup: z.string(),
             arrivalTime: z.string(),
-            guesthouse: z.string()
+            guesthouse: z.string(),
+            paymentId: z.string()
         }))
         .mutation(async ({ input }) => {
 
@@ -200,19 +202,25 @@ export const EmailRouter = createTRPCRouter({
 
                 const email: Mail.Options = {
                     from: `${sender}`,
-                    to: `pamina.z@aon.at`,
+                    to: `abdulrehman2020white@gmail.com`,
                     subject: "Nedy‘s Bicycle booking received",
                     html: `  
                 <table
                 style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse; font-family: Arial, sans-serif;">
+                <tr>
+                <td style="padding: 15px; text-align: center;">
+                    <img src="https://res.cloudinary.com/dbjiys9se/image/upload/v1716368218/logo_e4lgrd.png"
+                        alt="Neddy's Bicycle" style="width: 100px;">
+                </td>
+            </tr>
                 <tr>
                     <td style="padding: 10px;">
                         <h2 style="margin-bottom: 10px;">Booking confirmation</h2>
                         <p>Dear Nedy,</p>
                         <p>You have received a new bicycle rental booking:</p>
                         <p>
-                            <span style="font-weight:bold;">Booking number: </span>
-                            <span>${input.orderId}</span>
+                            <span style="font-weight:bold;">Refund Id: </span>
+                            <span>${input.paymentId}</span>
                         </p>
                         <span style="display: block; width: 100%; height: 1px; background-color: #ddd;"></span>
                         <p style="margin-top:10px; margin-bottom:10px;">PERSONAL DATA</p>
@@ -257,10 +265,6 @@ export const EmailRouter = createTRPCRouter({
                             <span>${input.arrivalTime}</span>
                         </p>
                         <p>
-                            <span style="font-weight:bold;">Arrival time: </span>
-                            <span>${input.men}</span>
-                        </p>
-                        <p>
                             <span style="font-weight:bold;">Gentlemen bicycles: </span>
                             <span>${input.men}</span>
                         </p>
@@ -283,6 +287,7 @@ export const EmailRouter = createTRPCRouter({
                             <span style="font-weight:bold;">Paid: </span>
                             <span>PayPal</span>
                         </p>
+                        <a href="https://www.paypal.com/mep/dashboard" style="font-style: italic;">PayPal Dashboard</a>
                     </td>
                 </tr>
                 </tr>

@@ -71,6 +71,7 @@ export const PayPalButton = () => {
             startDate: bookingData.startDate ?? '',
             endDate: bookingData.endDate ?? '',
             orderId: data.orderID,
+            paymentId:data.payerID ?? '',
             guesthouse:bookingData.guesthouse ?? '',
             arrivalTime: bookingData.arrivalTime ?? '',
             pickup: bookingData.location ==1 ? 'Jetty': 'Guesthouse'
