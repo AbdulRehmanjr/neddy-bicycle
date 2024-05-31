@@ -44,7 +44,7 @@ export async function POST(req: Request) {
         }
 
         const totalPrice: number = amount
-        const platformFee: number = totalPrice * 0.05
+        const platformFee: number = totalPrice * 0.026
         const discount = 0
         const totalPayable: number = totalPrice - discount
 

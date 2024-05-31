@@ -40,7 +40,7 @@ export const AmountDetail = () => {
                     <span>Kids bikes:</span>
                     <span>{data.kids}</span>
                 </p>
-                <p className="flex font-extrabold gap-2 border-y-2 p-3">
+                <p className="flex font-extrabold gap-2 border-y-2 py-3">
                     <span>Price:</span>
                     <span>{data.amount} €</span>
                 </p>

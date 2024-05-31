@@ -33,7 +33,9 @@ export const EmailRouter = createTRPCRouter({
             guesthouse: z.string(),
             pickup: z.string(),
             arrivalTime: z.string(),
-            paymentId: z.string()
+            paymentId: z.string(),
+            additional: z.string(),
+            info: z.string()
         }))
         .mutation(async ({ input }) => {
 
@@ -127,6 +129,14 @@ export const EmailRouter = createTRPCRouter({
                                 <span>${input.kids}</span>
                             </p>
                             <p>
+                                <span style="font-weight:bold;">How did you get to know us?: </span>
+                                <span>${input.info}</span>
+                            </p>
+                            <p>
+                                <span style="font-weight:bold;">Additional info: </span>
+                                <span>${input.additional}</span>
+                            </p>
+                            <p>
                                 <span style="font-weight:bold;">Total amount: </span>
                                 <span>${input.amount} €</span>
                             </p>
@@ -178,7 +188,9 @@ export const EmailRouter = createTRPCRouter({
             pickup: z.string(),
             arrivalTime: z.string(),
             guesthouse: z.string(),
-            paymentId: z.string()
+            paymentId: z.string(),
+            additional: z.string(),
+            info: z.string()
         }))
         .mutation(async ({ input }) => {
 
@@ -276,6 +288,14 @@ export const EmailRouter = createTRPCRouter({
                             <span style="font-weight:bold;">Kids bicycles: </span>
                             <span>${input.kids}</span>
                         </p>
+                        <p> 
+                                <span style="font-weight:bold;">How did you get to know us?: </span>
+                                <span>${input.info}</span>
+                            </p>
+                            <p>
+                                <span style="font-weight:bold;">Additional info: </span>
+                                <span>${input.additional}</span>
+                            </p>
                         <span style="display: block; width: 100%; height: 1px; background-color: #ddd;"></span>
                         <p style="margin-top:10px; margin-bottom:10px;">PAYMENT DETAILS</p>
                         <span style="display: block; width: 100%; height: 1px; background-color: #ddd;"></span>

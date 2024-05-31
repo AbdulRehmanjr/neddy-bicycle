@@ -15,6 +15,8 @@ const selectionInital: SelectionProps = {
     phone:'',
     guesthouse:'',
     arrivalTime:'',
+    additional:'',
+    info:'',
 }
 
 export const bookingId = atomWithStorage<string>('neddyBookingAtom','')
