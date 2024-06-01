@@ -4,8 +4,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
-
-import { TRPCClientError } from "@trpc/client";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { type Transporter, createTransport } from "nodemailer";
@@ -53,19 +51,19 @@ export const EmailRouter = createTRPCRouter({
                 })
                 const pdfFilePath = path.join(cwd(), 'public', 'Cancellation.pdf');
                 const attachments: Mail.Attachment[] = [{
-                    filename: 'Cancellation_Policy.pdf',
+                    filename: `Cancellation Policy Nedy's Bicycle.pdf`,
                     path: pdfFilePath
                 }]
 
                 const email: Mail.Options = {
                     from: `${sender}`,
                     to: `${input.email}`,
-                    subject: "Neddy Bicycle Booking Confirmation",
+                    subject: " Nedy's Bicycle booking confirmation",
                     html: `  
                     <table
                     style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse; font-family: Arial, sans-serif;">
                     <tr>
-                        <td style="background-color: rgb(243,244,246); padding: 15px; text-align: center;">
+                        <td style=" padding: 15px; text-align: center;">
                             <img src="https://res.cloudinary.com/dbjiys9se/image/upload/v1716368218/logo_e4lgrd.png"
                                 alt="Neddy's Bicycle" style="width: 100px;">
                         </td>
@@ -109,7 +107,7 @@ export const EmailRouter = createTRPCRouter({
                             <span>${input.guesthouse}</span>
                         </p>
                         <p>
-                            <span style="font-weight:bold;">ArrivalTime: </span>
+                            <span style="font-weight:bold;">Arrival time: </span>
                             <span>${input.arrivalTime}</span>
                         </p>
                             <p>
@@ -140,6 +138,10 @@ export const EmailRouter = createTRPCRouter({
                                 <span style="font-weight:bold;">Total amount: </span>
                                 <span>${input.amount} €</span>
                             </p>
+                            <p>
+                                <span style="font-weight:bold;">Payment: </span>
+                                <span>Paid online</span>
+                            </p>
                         </td>
                     </tr>
                     <tr>
@@ -152,7 +154,7 @@ export const EmailRouter = createTRPCRouter({
                         </td>
                     </tr>
                     <tr>
-                        <td style="background-color: rgb(243,244,246);  padding: 15px; text-align: center; color:black">
+                        <td style="padding: 15px; text-align: center; color:black">
                             <img src="https://res.cloudinary.com/dbjiys9se/image/upload/v1716368218/logo_e4lgrd.png"
                                 alt="Neddy Bicycle" style="width: 100px;">
                             <p>Nedy’s Bicycle Rental</p>
@@ -206,12 +208,6 @@ export const EmailRouter = createTRPCRouter({
                         pass: password,
                     },
                 })
-                const pdfFilePath = path.join(cwd(), 'public', 'Cancellation.pdf');
-                const attachments: Mail.Attachment[] = [{
-                    filename: 'Cancellation_Policy.pdf',
-                    path: pdfFilePath
-                }]
-
                 const email: Mail.Options = {
                     from: `${sender}`,
                     to: `abdulrehman2020white@gmail.com`,
@@ -312,54 +308,12 @@ export const EmailRouter = createTRPCRouter({
                 </tr>
                 </tr>
             </table>`,
-                    attachments: attachments
                 }
                 await transporter.sendMail(email)
             } catch (error) {
                 console.error(error)
                 throw new Error("Something went wrong")
             }
-        }),
-    testMail: publicProcedure
-        .mutation(async () => {
-
-            try {
-                const sender = env.ZOHO_MAIL
-                const password = env.ZOHO_PASSWORD
-                const transporter: Transporter<SMTPTransport.SentMessageInfo> = createTransport({
-                    host: "smtp.zoho.com",
-                    port: 587,
-                    secure: false,
-                    auth: {
-                        user: sender,
-                        pass: password,
-                    },
-                })
-                const pdfFilePath = path.join(cwd(), 'public', 'Cancellation.pdf');
-                const attachments: Mail.Attachment[] = [{
-                    filename: 'Cancellation_Policy.pdf',
-                    path: pdfFilePath
-                }]
-
-                const email: Mail.Options = {
-                    from: `${sender}`,
-                    to: `abdulrehman2020white@gmail.com`,
-                    subject: "Hotel Neddy Bicycle Booking Confirmation",
-                    html: `
-                    Testing email send by sender ${sender}
-                    `,
-                    attachments: attachments
-                }
-                await transporter.sendMail(email)
-            } catch (error) {
-
-                console.log(error)
-                if (error instanceof TRPCClientError) {
-                    console.error(error.message)
-                    throw new Error(error.message)
-                }
-                throw new Error("Error")
-            }
-        }),
+        })
 
 })
