@@ -210,7 +210,7 @@ export const EmailRouter = createTRPCRouter({
                 })
                 const email: Mail.Options = {
                     from: `${sender}`,
-                    to: `pamina.z@aon.at`,
+                    to: `rayenradegonde@gmail.com`,
                     subject: "Nedy‘s Bicycle booking received",
                     html: `  
                 <table
