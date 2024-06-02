@@ -37,6 +37,6 @@
     "**/*.cjs",
     "**/*.js",
     ".next/types/**/*.ts"
-  ],
+, "../aria-rentals-dashboard/src/types/index.d.ts"  ],
   "exclude": ["node_modules"]
 }
