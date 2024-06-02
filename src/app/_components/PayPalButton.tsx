@@ -11,6 +11,7 @@ import { bookingId, selectionAtom, triggerAtom } from "~/store"
 import { useEffect, useState } from "react"
 import { clearLocalStorage } from "~/utils"
 import { api } from "~/trpc/react"
+import axios from "axios"
 
 export const PayPalButton = () => {
 
@@ -33,30 +34,16 @@ export const PayPalButton = () => {
 
         const paypal = paypalId
         const amount = bookingData.amount
-        const requestBody = {
-            paypal: paypal,
-            amount: amount,
-        }
+        
+        const response  = await axios.post('/api/order', { paypal: paypal, amount: amount })
 
-        const response: Response = await fetch("/api/order", {
-            method: "POST",
-            headers: {
-                "Content-Types": "application/json",
-            },
-            body: JSON.stringify(requestBody)
-        })
-
-        const order = await response.json()
-
-        return order.id;
+        return response.data.id;
     }
 
     const approveOrder = async (data: OnApproveData): Promise<void> => {
 
         clearLocalStorage()
         setDisabled(true)
-
-        router.push('/success')
 
         const emailObject = {
             firstName: bookingData.firstName,
@@ -71,27 +58,19 @@ export const PayPalButton = () => {
             startDate: bookingData.startDate ?? '',
             endDate: bookingData.endDate ?? '',
             orderId: data.orderID,
-            paymentId:data.payerID ?? '',
+            paymentId: data.payerID ?? '',
             additional: bookingData.additional ?? '',
             info: bookingData.info ?? '',
-            guesthouse:bookingData.guesthouse ?? '',
+            guesthouse: bookingData.guesthouse ?? '',
             arrivalTime: bookingData.arrivalTime ?? '',
-            pickup: bookingData.location ==1 ? 'Jetty': 'Guesthouse'
+            pickup: bookingData.location == 1 ? 'Jetty' : 'Guesthouse'
         }
 
         emailSender.mutate(emailObject)
         sellerEmail.mutate(emailObject)
 
-        await fetch("/api/order/capture", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                orderId: data.orderID,
-                bookingData: bookingData
-            })
-        })
+        await axios.post('/api/order/capture',{orderId:data.orderID,bookingData:bookingData})
+        router.push('/success')
     }
 
     const cancelOrder = (_data: Record<string, unknown>): void => {

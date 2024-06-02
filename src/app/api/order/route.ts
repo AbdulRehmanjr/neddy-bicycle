@@ -19,17 +19,19 @@ export async function POST(req: Request) {
         const payPalInfo = await db.payPalInfo.findUniqueOrThrow({ where: { id: env.PAYPAL_SELLER_CUSTOM_ID } })
 
         const username = env.PAYPAL_CLIENT
-        const password = env.PAYPAL_SECERT
-        const BN_CODE = env.BN_CODE
+        const secert = env.PAYPAL_SECERT
+        const bnCode = env.BN_CODE
 
-        const base64Credentials: string = Buffer.from(`${username}:${password}`).toString('base64')
+        console.log(username,secert,bnCode)
+
+        const base64Credentials: string = Buffer.from(`${username}:${secert}`).toString('base64')
         const config = {
             headers: {
                 'Accept': 'application/json',
                 'Accept-Language': 'en_US',
                 'Authorization': `Basic ${base64Credentials}`,
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'PayPal-Partner-Attribution-Id': BN_CODE
+                'PayPal-Partner-Attribution-Id': bnCode
             },
         }
 
@@ -40,7 +42,7 @@ export async function POST(req: Request) {
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`,
-            'PayPal-Partner-Attribution-Id': BN_CODE
+            'PayPal-Partner-Attribution-Id': bnCode
         }
 
         const totalPrice: number = amount
