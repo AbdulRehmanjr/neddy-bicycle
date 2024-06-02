@@ -11,13 +11,15 @@ import { bookingId, selectionAtom, triggerAtom } from "~/store"
 import { useEffect, useState } from "react"
 import { clearLocalStorage } from "~/utils"
 import { api } from "~/trpc/react"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
+import { useToast } from "~/components/ui/use-toast"
 
 export const PayPalButton = () => {
 
     const router = useRouter()
     const bookingData = useAtomValue(selectionAtom)
     const paypalId = useAtomValue(bookingId)
+    const { toast } = useToast()
 
     const [isDisabled, setDisabled] = useAtom(triggerAtom)
     const [isReady, setIsReady] = useState(false)
@@ -34,43 +36,66 @@ export const PayPalButton = () => {
 
         const paypal = paypalId
         const amount = bookingData.amount
-        
-        const response  = await axios.post('/api/order', { paypal: paypal, amount: amount })
+
+        const response = await axios.post('/api/order', { paypal: paypal, amount: amount })
 
         return response.data.id;
     }
 
     const approveOrder = async (data: OnApproveData): Promise<void> => {
 
-        clearLocalStorage()
-        setDisabled(true)
+        try {
 
-        const emailObject = {
-            firstName: bookingData.firstName,
-            lastName: bookingData.lastName,
-            email: bookingData.email,
-            phone: bookingData.phone,
-            men: bookingData.men,
-            ladies: bookingData.ladies,
-            kids: bookingData.kids,
-            amount: bookingData.amount,
-            duration: bookingData.duration,
-            startDate: bookingData.startDate ?? '',
-            endDate: bookingData.endDate ?? '',
-            orderId: data.orderID,
-            paymentId: data.payerID ?? '',
-            additional: bookingData.additional ?? '',
-            info: bookingData.info ?? '',
-            guesthouse: bookingData.guesthouse ?? '',
-            arrivalTime: bookingData.arrivalTime ?? '',
-            pickup: bookingData.location == 1 ? 'Jetty' : 'Guesthouse'
+            await axios.post('/api/order/capture', { orderId: data.orderID, bookingData: bookingData })
+
+            clearLocalStorage()
+            setDisabled(true)
+
+            const emailObject = {
+                firstName: bookingData.firstName,
+                lastName: bookingData.lastName,
+                email: bookingData.email,
+                phone: bookingData.phone,
+                men: bookingData.men,
+                ladies: bookingData.ladies,
+                kids: bookingData.kids,
+                amount: bookingData.amount,
+                duration: bookingData.duration,
+                startDate: bookingData.startDate ?? '',
+                endDate: bookingData.endDate ?? '',
+                orderId: data.orderID,
+                paymentId: data.payerID ?? '',
+                additional: bookingData.additional ?? '',
+                info: bookingData.info ?? '',
+                guesthouse: bookingData.guesthouse ?? '',
+                arrivalTime: bookingData.arrivalTime ?? '',
+                pickup: bookingData.location == 1 ? 'Jetty' : 'Guesthouse'
+            }
+
+            emailSender.mutate(emailObject)
+            sellerEmail.mutate(emailObject)
+
+            router.push('/success')
+        } catch (error) {
+
+            const errorobject = { issue: "Something went wrong", description: 'Order not fulfilled' }
+            if (error instanceof AxiosError) {
+                console.error(error.response?.data)
+                const errorResponse = error.response?.data.details[0] ?? errorobject
+                toast({
+                    variant:'destructive',
+                    title: errorResponse.issue,
+                    description: errorResponse.description
+                })
+            }
+            toast({
+                variant:'destructive',
+                title: errorobject.issue,
+                description: errorobject.description
+            })
+            console.error('Error', error)
+            throw new Error('Something went wrong')
         }
-
-        emailSender.mutate(emailObject)
-        sellerEmail.mutate(emailObject)
-
-        await axios.post('/api/order/capture',{orderId:data.orderID,bookingData:bookingData})
-        router.push('/success')
     }
 
     const cancelOrder = (_data: Record<string, unknown>): void => {

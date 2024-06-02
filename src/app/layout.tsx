@@ -4,6 +4,7 @@ import { Header } from "~/app/_components/Header";
 import { Libre_Franklin, IBM_Plex_Mono } from 'next/font/google'
 import { Providers } from "./provider";
 import { Footer } from "~/app/_components/Footer";
+import { Toaster } from "~/components/ui/toaster";
 
 const libre = Libre_Franklin({
   subsets: ["latin"],
@@ -32,10 +33,11 @@ export default function RootLayout({
     <html lang="en" className={`${ibm.variable} ${libre.variable} min-h-screen`}>
       <body className="grid grid-cols-12">
         <Providers>
-            <Header />
-            {children}
-            <Footer/>
-          </Providers>
+          <Header />
+          {children}
+          <Footer />
+        </Providers>
+        <Toaster />
       </body>
     </html>
   );

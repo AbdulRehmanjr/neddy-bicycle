@@ -15,15 +15,6 @@ export async function POST(req: Request) {
 
     switch (jsonObject.event_type) {
         case 'MERCHANT.ONBOARDING.COMPLETED':
-            // await db.seller.update({
-            //     where: {
-            //         trackingId: jsonObject.resource.tracking_id,
-            //     },
-            //     data: {
-            //         merchantId: jsonObject.resource.merchant_id,
-            //         partner_client_id: jsonObject.resource.partner_client_id,
-            //     }
-            // })
             break
         case "MERCHANT.PARTNER-CONSENT.REVOKED":
             break
