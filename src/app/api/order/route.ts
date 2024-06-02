@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
     try {
 
-        const { paypal, amount } = await req.json()
+        const { paypal, amount }: { paypal: string, amount: number } = await req.json()
 
         const payPalInfo = await db.payPalInfo.findUniqueOrThrow({ where: { id: env.PAYPAL_SELLER_CUSTOM_ID } })
 
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
             purchase_units: [
                 {
                     reference_id: paypal,
-                    description: "Neddy Bicycle booking",
+                    description: "Nedy Bicycle booking",
                     amount: {
                         currency_code: 'EUR',
                         value: String(totalPayable),
@@ -67,14 +67,14 @@ export async function POST(req: Request) {
                         }
                     },
                     items: [{
-                        name: 'Neddy Bike Booking',
+                        name: 'Nedy Bike Booking',
                         unit_amount: {
                             currency_code: 'EUR',
                             value: +totalPrice.toFixed(2),
                         },
                         quantity: "1",
-                        description: "Some Description related to booking.",
-                        sku: "R21NM1M!",
+                        description: "Thanks for choosing Nedy‘s Bicycle Rental",
+                        sku: paypal.substring(0,6),
                         category: 'PHYSICAL_GOODS',
                     }],
                     payee: {

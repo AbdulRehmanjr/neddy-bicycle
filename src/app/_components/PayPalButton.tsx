@@ -48,8 +48,7 @@ export const PayPalButton = () => {
 
             await axios.post('/api/order/capture', { orderId: data.orderID, bookingData: bookingData })
 
-            clearLocalStorage()
-            setDisabled(true)
+
 
             const emailObject = {
                 firstName: bookingData.firstName,
@@ -74,7 +73,8 @@ export const PayPalButton = () => {
 
             emailSender.mutate(emailObject)
             sellerEmail.mutate(emailObject)
-
+            clearLocalStorage()
+            setDisabled(true)
             router.push('/success')
         } catch (error) {
 

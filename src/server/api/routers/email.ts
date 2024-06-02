@@ -148,8 +148,12 @@ export const EmailRouter = createTRPCRouter({
                         <td style="padding: 10px;">
                             <p>Please feel free to reach out to us if you need to cancel or reschedule your booking. Cancellation
                                 policy is attached below.</p>
-                            <p style="font-weight:900;">Please do not reply to this email</p>
-
+                            
+                            <p style="font-weight:900;">How will you get your bicycles? </p>
+                            <p>If you have chosen Jetty as a pickup location we will meet you at the arrival time you stated in the booking form.</p>
+                                <p>If you have chosen Guesthouse as a pickup location we will bring you the bicycles to the guesthouse you stated in the booking form</p>
+                                <p>You do not know your guesthouse and arrival time yet? Please contact us as soon as you know so that we can arrange everything on time.</p>
+                            <p style="font-weight:900;">Please do not reply to this email</p>                            
                             <p style="margin-bottom:10px;">We are looking forward to seeing you soon.</p>
                             <p style="margin-bottom:10px;">Best regards,</p>
                             <h2 style="margin-bottom:10px;">Nedy’s Bicycle Rental</h2>
