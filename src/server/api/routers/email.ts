@@ -148,6 +148,8 @@ export const EmailRouter = createTRPCRouter({
                         <td style="padding: 10px;">
                             <p>Please feel free to reach out to us if you need to cancel or reschedule your booking. Cancellation
                                 policy is attached below.</p>
+                            <p style="font-weight:900;">Please do not reply to this email</p>
+
                             <p style="margin-bottom:10px;">We are looking forward to seeing you soon.</p>
                             <p style="margin-bottom:10px;">Best regards,</p>
                             <h2 style="margin-bottom:10px;">Nedy’s Bicycle Rental</h2>

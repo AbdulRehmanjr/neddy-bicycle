@@ -21,9 +21,6 @@ export async function POST(req: Request) {
         const username = env.PAYPAL_CLIENT
         const secert = env.PAYPAL_SECERT
         const bnCode = env.BN_CODE
-
-        console.log(username,secert,bnCode)
-
         const base64Credentials: string = Buffer.from(`${username}:${secert}`).toString('base64')
         const config = {
             headers: {
@@ -44,7 +41,6 @@ export async function POST(req: Request) {
             'Authorization': `Bearer ${accessToken}`,
             'PayPal-Partner-Attribution-Id': bnCode
         }
-
         const totalPrice: number = amount
         const platformFee: number = totalPrice * 0.026
         const discount = 0
@@ -106,8 +102,8 @@ export async function POST(req: Request) {
         }
 
         const boatResponse = await axios.post(paypalApiUrl, paymentJson, { headers })
-        return NextResponse.json(boatResponse.data)
 
+        return NextResponse.json(boatResponse.data)
     } catch (error) {
         if (error instanceof TRPCClientError) {
             console.error(error.message)
