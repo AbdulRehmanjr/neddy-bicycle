@@ -74,7 +74,7 @@ export async function POST(req: Request) {
                         },
                         quantity: "1",
                         description: "Thanks for choosing Nedy‘s Bicycle Rental",
-                        sku: paypal.substring(0,6),
+                        sku: paypal.substring(0, 6),
                         category: 'PHYSICAL_GOODS',
                     }],
                     payee: {
@@ -107,11 +107,13 @@ export async function POST(req: Request) {
     } catch (error) {
         if (error instanceof TRPCClientError) {
             console.error(error.message)
-            throw new Error(error.message)
+            throw new AxiosError(error.message)
         }
-        if (error instanceof AxiosError)
-            console.log(error.response?.data)
-        throw new Error("Something went wrong.")
+        else if (error instanceof AxiosError) {
+            const err :string = error.response?.data.message
+            console.log(err)
+            throw new AxiosError(err)
+        }
     }
 
 }

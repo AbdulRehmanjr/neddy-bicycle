@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { TRPCClientError } from "@trpc/client";
 import axios, { AxiosError } from "axios";
 import { env } from "~/env";
@@ -61,16 +63,13 @@ export async function POST(req: Request) {
 
         if (error instanceof TRPCClientError) {
             console.error(error.message)
-            throw new Error(error.message)
+            throw new AxiosError(error.message)
         }
         else if (error instanceof AxiosError) {
-            console.error(error.message)
-            console.error(error.response?.data)
-            console.log(error.cause)
-            throw new Error(error.message)
+            const err :string = error.response?.data.message
+            console.log(err)
+            throw new AxiosError(err)
         }
-        console.error(error)
-        throw new Error("Something went wrong")
     }
 
 }
