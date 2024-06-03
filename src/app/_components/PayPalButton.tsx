@@ -14,6 +14,7 @@ import { api } from "~/trpc/react"
 import axios, { AxiosError } from "axios"
 import { useToast } from "~/components/ui/use-toast"
 
+
 export const PayPalButton = () => {
 
     const router = useRouter()
@@ -34,12 +35,29 @@ export const PayPalButton = () => {
 
     const createOrder = async (_data: CreateOrderData) => {
 
-        const paypal = paypalId
-        const amount = bookingData.amount
+        try {
+            const paypal = paypalId
+            const amount = bookingData.amount
 
-        const response = await axios.post('/api/order', { paypal: paypal, amount: amount })
+            const response = await axios.post('/api/order', { paypal: paypal, amount: amount })
 
-        return response.data.id;
+            return response.data.id;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                console.error(error.message)
+                toast({
+                    variant: 'destructive',
+                    description: error.message ?? 'Error'
+                })
+            }
+            else{
+                toast({
+                    variant: 'destructive',
+                    description:'Something went wrong'
+                })
+            }
+            
+        }
     }
 
     const approveOrder = async (data: OnApproveData): Promise<void> => {
@@ -47,8 +65,6 @@ export const PayPalButton = () => {
         try {
 
             await axios.post('/api/order/capture', { orderId: data.orderID, bookingData: bookingData })
-
-
 
             const emailObject = {
                 firstName: bookingData.firstName,
@@ -77,24 +93,19 @@ export const PayPalButton = () => {
             setDisabled(true)
             router.push('/success')
         } catch (error) {
-
-            const errorobject = { issue: "Something went wrong", description: 'Order not fulfilled' }
             if (error instanceof AxiosError) {
-                console.error(error.response?.data)
-                const errorResponse = error.response?.data.details[0] ?? errorobject
+                console.error(error.message)
                 toast({
-                    variant:'destructive',
-                    title: errorResponse.issue,
-                    description: errorResponse.description
+                    variant: 'destructive',
+                    description: error.message ?? 'Error'
                 })
             }
-            toast({
-                variant:'destructive',
-                title: errorobject.issue,
-                description: errorobject.description
-            })
-            console.error('Error', error)
-            throw new Error('Something went wrong')
+            else{
+                toast({
+                    variant: 'destructive',
+                    description:'Something went wrong'
+                })
+            }
         }
     }
 
