@@ -50,11 +50,11 @@ export async function POST(req: Request) {
                 description: `\nOrder Id: ${orderId}\nPhone: ${bookingData.phone}\nEmail: ${bookingData.email}\nGuesthouse: ${bookingData.guesthouse}\nArrivalTime: ${bookingData.arrivalTime} Pickup: ${bookingData.location ==1 ?'Jetty':'Guesthouse'}\nPrice: ${bookingData.amount} € \nMen: ${bookingData.men}\nLadies: ${bookingData.ladies}\nKids: ${bookingData.kids}\nDuration: ${bookingData.duration} days\nAdditional information: ${bookingData.additional}`,
                 start: {
                     dateTime: new Date(bookingData.startDate??"").toISOString(),
-                    timeZone: "Asia/Karachi"
+                    timeZone: "Asia/Dubai"
                 },
                 end: {
                     dateTime: new Date(bookingData.endDate??"").toISOString(),
-                    timeZone: "Asia/Karachi"
+                    timeZone: "Asia/Dubai"
                 }
             }
         });

@@ -38,9 +38,7 @@ export const PayPalButton = () => {
         try {
             const paypal = paypalId
             const amount = bookingData.amount
-
             const response = await axios.post('/api/order', { paypal: paypal, amount: amount })
-
             return response.data.id;
         } catch (error) {
             if (error instanceof AxiosError) {
@@ -50,13 +48,13 @@ export const PayPalButton = () => {
                     description: error.message ?? 'Error'
                 })
             }
-            else{
+            else {
                 toast({
                     variant: 'destructive',
-                    description:'Something went wrong'
+                    description: 'Something went wrong'
                 })
             }
-            
+
         }
     }
 
@@ -100,10 +98,10 @@ export const PayPalButton = () => {
                     description: error.message ?? 'Error'
                 })
             }
-            else{
+            else {
                 toast({
                     variant: 'destructive',
-                    description:'Something went wrong'
+                    description: 'Something went wrong'
                 })
             }
         }

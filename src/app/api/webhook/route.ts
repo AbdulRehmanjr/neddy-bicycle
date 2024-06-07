@@ -38,6 +38,7 @@ export async function POST(req: Request) {
                     console.error(error.message)
                     throw new Error(error.message)
                 }
+                console.error(error)
                 throw new Error("Error")
             }
             break
