@@ -73,7 +73,7 @@ export async function POST(req: Request) {
                             value: +totalPrice.toFixed(2),
                         },
                         quantity: "1",
-                        description: "Thanks for choosing Nedy‘s Bicycle Rental",
+                        description: "Thanks for choosing Nedy's Bicycle Rental",
                         sku: paypal.substring(0, 6),
                         category: 'PHYSICAL_GOODS',
                     }],
@@ -110,8 +110,8 @@ export async function POST(req: Request) {
             throw new AxiosError(error.message)
         }
         else if (error instanceof AxiosError) {
+            console.log(error)
             const err :string = error.response?.data.message
-            console.log(err)
             throw new AxiosError(err)
         }
     }

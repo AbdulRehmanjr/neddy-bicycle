@@ -7,11 +7,13 @@ import { calendar } from "~/server/config/calendar";
 import { authClient } from "~/server/config/oauthClient";
 import { db } from "~/server/db";
 
+import { api } from "~/trpc/server";
+
 export async function POST(req: Request) {
 
     try {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const { orderId, bookingData } : {orderId:string,bookingData:SelectionProps} = await req.json()
+        const { orderId, bookingData }: { orderId: string, bookingData: SelectionProps } = await req.json()
 
         const username = env.PAYPAL_CLIENT
         const password = env.PAYPAL_SECERT
@@ -40,20 +42,41 @@ export async function POST(req: Request) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const order = response.data
 
+        
+        await api.booking.createBooking({
+            firstName: bookingData.firstName,
+            lastName: bookingData.lastName,
+            email: bookingData.email,
+            phone: bookingData.phone,
+            amount: bookingData.amount,
+            men: bookingData.men,
+            ladies: bookingData.ladies,
+            kids: bookingData.kids,
+            duration: bookingData.duration,
+            startDate: bookingData.startDate ?? 'none',
+            endDate: bookingData.endDate ?? 'none',
+            pickup: bookingData.location ?? 0,
+            guesthouse: bookingData.guesthouse ?? 'none',
+            arrivalTime: bookingData.arrivalTime ?? 'none',
+            additional: bookingData.additional ?? 'none',
+            info: bookingData.info ?? 'none',
+        })
+
         const googleToken = await db.calendars.findFirstOrThrow({ where: { platform: 'Neddy' } })
         authClient.setCredentials({ refresh_token: googleToken?.refreshToken })
+
         await calendar.events.insert({
             calendarId: 'primary',
             auth: authClient,
             requestBody: {
                 summary: `${bookingData.firstName} ${bookingData.lastName}`,
-                description: `\nOrder Id: ${orderId}\nPhone: ${bookingData.phone}\nEmail: ${bookingData.email}\nGuesthouse: ${bookingData.guesthouse}\nArrivalTime: ${bookingData.arrivalTime} Pickup: ${bookingData.location ==1 ?'Jetty':'Guesthouse'}\nPrice: ${bookingData.amount} € \nMen: ${bookingData.men}\nLadies: ${bookingData.ladies}\nKids: ${bookingData.kids}\nDuration: ${bookingData.duration} days\nAdditional information: ${bookingData.additional}`,
+                description: `\nOrder Id: ${orderId}\nPhone: ${bookingData.phone}\nEmail: ${bookingData.email}\nGuesthouse: ${bookingData.guesthouse}\nArrivalTime: ${bookingData.arrivalTime} Pickup: ${bookingData.location == 1 ? 'Jetty' : 'Guesthouse'}\nPrice: ${bookingData.amount} € \nMen: ${bookingData.men}\nLadies: ${bookingData.ladies}\nKids: ${bookingData.kids}\nDuration: ${bookingData.duration} days\nAdditional information: ${bookingData.additional}`,
                 start: {
-                    dateTime: new Date(bookingData.startDate??"").toISOString(),
+                    dateTime: new Date(bookingData.startDate ?? "").toISOString(),
                     timeZone: "Asia/Dubai"
                 },
                 end: {
-                    dateTime: new Date(bookingData.endDate??"").toISOString(),
+                    dateTime: new Date(bookingData.endDate ?? "").toISOString(),
                     timeZone: "Asia/Dubai"
                 }
             }
@@ -66,7 +89,7 @@ export async function POST(req: Request) {
             throw new AxiosError(error.message)
         }
         else if (error instanceof AxiosError) {
-            const err :string = error.response?.data.message
+            const err: string = error.response?.data.message
             console.log(err)
             throw new AxiosError(err)
         }
