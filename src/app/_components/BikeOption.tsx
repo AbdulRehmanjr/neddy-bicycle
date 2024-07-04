@@ -1,16 +1,16 @@
 'use client'
 
-import { useAtom } from "jotai/react"
 import { Minus, Plus } from "lucide-react"
 import { Button } from "~/components/ui/button"
-import { selectionAtom } from "~/store"
+import { useBookingStore } from "~/store"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 export const BikeOptions = () => {
 
     const router = useRouter()
-    const [selection, setSelection] = useAtom(selectionAtom)
+
+    const {selection,setSelection} = useBookingStore()
 
     return (
         <div className="flex flex-col gap-12 font-ibm mx-10 md:mx-40">
@@ -27,14 +27,14 @@ export const BikeOptions = () => {
                         <Button
                             className="bg-yellow hover:bg-yellow-hover"
                             disabled={selection.men == 0}
-                            onClick={() => setSelection((prev) => ({ ...prev, men: prev.men - 1 }))}
+                            onClick={() => setSelection({men: selection.men - 1 })}
                         >
                             <Minus />
                         </Button>
                         <p className="text-xl">{selection.men}</p>
                         <Button
                             className="bg-yellow hover:bg-yellow-hover"
-                            onClick={() => setSelection((prev) => ({ ...prev, men: prev.men + 1 }))}
+                            onClick={() => setSelection({men: selection.men + 1 })}
                         >
                             <Plus />
                         </Button>
@@ -52,14 +52,14 @@ export const BikeOptions = () => {
                         <Button
                             className="bg-yellow hover:bg-yellow-hover"
                             disabled={selection.ladies == 0}
-                            onClick={() => setSelection((prev) => ({ ...prev, ladies: prev.ladies - 1 }))}
+                            onClick={() => setSelection({ladies: selection.ladies - 1 })}
                         >
                             <Minus />
                         </Button>
                         <p className="text-xl">{selection.ladies}</p>
                         <Button
                             className="bg-yellow hover:bg-yellow-hover"
-                            onClick={() => setSelection((prev) => ({ ...prev, ladies: prev.ladies + 1 }))}
+                            onClick={() => setSelection({ladies: selection.ladies - 1 })}
                         >
                             <Plus />
                         </Button>
@@ -77,14 +77,14 @@ export const BikeOptions = () => {
                         <Button
                             className="bg-yellow hover:bg-yellow-hover"
                             disabled={selection.kids == 0}
-                            onClick={() => setSelection((prev) => ({ ...prev, kids: prev.kids - 1 }))}
+                            onClick={() => setSelection({kids: selection.kids - 1 })}
                         >
                             <Minus />
                         </Button>
                         <p className="text-xl">{selection.kids}</p>
                         <Button
                             className="bg-yellow hover:bg-yellow-hover"
-                            onClick={() => setSelection((prev) => ({ ...prev, kids: prev.kids + 1 }))}
+                            onClick={() => setSelection({kids: selection.kids - 1 })}
                         >
                             <Plus />
                         </Button>
