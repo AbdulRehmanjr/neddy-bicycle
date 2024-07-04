@@ -1,16 +1,17 @@
 'use client'
 
-import { useAtom } from "jotai/react"
+
 import { useRouter } from "next/navigation"
-import { selectionAtom } from "~/store"
+import { useBookingStore } from "~/store"
+
 
 export const BikeLocation = () => {
 
     const router = useRouter()
-    const [selection, setSelection] = useAtom(selectionAtom)
+    const {selection,setSelection} = useBookingStore()
 
     const clicked = (location: 1 | 2) => {
-        setSelection((prev) => ({ ...prev, location: location }))
+        setSelection({ location: location })
         router.push('/guesthouse')
     }
     return (

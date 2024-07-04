@@ -5,8 +5,7 @@ import { useMemo, useState } from "react"
 import dayjs, { type Dayjs } from 'dayjs'
 import { Button } from "~/components/ui/button"
 import isBetween from 'dayjs/plugin/isBetween'
-import { useAtom } from "jotai/react"
-import { selectionAtom } from "~/store"
+import {  useBookingStore } from "~/store"
 
 dayjs.extend(isBetween)
 
@@ -18,7 +17,8 @@ type RangeProps = {
 export const BikeCalendar = () => {
 
     const router = useRouter()
-    const [data, setData] = useAtom(selectionAtom)
+    
+    const {selection,setSelection} = useBookingStore()
     const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs())
     const [range, setRange] = useState<RangeProps>({ rangeStart: null, rangeEnd: null })
     const [durations, setDuration] = useState<number>(1)
@@ -56,9 +56,9 @@ export const BikeCalendar = () => {
         }
 
         if (duration >= 2)
-            subTotal = (data.men * prices['2'] + data.ladies * prices['2'] + data.kids * prices['2'])
+            subTotal = (selection.men * prices['2'] + selection.ladies * prices['2'] + selection.kids * prices['2'])
         else
-            subTotal = (data.men * prices['1'] + data.ladies * prices['1'] + data.kids * prices['1'])
+            subTotal = (selection.men * prices['1'] + selection.ladies * prices['1'] + selection.kids * prices['1'])
 
         return subTotal
     }
@@ -68,7 +68,7 @@ export const BikeCalendar = () => {
         if (range.rangeStart === null) {
             const price = calculatePrice(1)
             setRange((prev) => ({ ...prev, rangeStart: date, rangeEnd: date }))
-            setData((prev) => ({ ...prev, startDate: date.format('YYYY-MM-DD'), endDate: date.format('YYYY-MM-DD'), duration: 1,amount:price }))
+            setSelection({startDate: date.format('YYYY-MM-DD'), endDate: date.format('YYYY-MM-DD'), duration: 1,amount:price })
         }
         else if (!date.isBefore(range.rangeStart, "day")) {
             setRange((prev) => ({ ...prev, rangeEnd: date }))
@@ -77,16 +77,16 @@ export const BikeCalendar = () => {
             if (duration >= 7) {
                 setDuration(() => duration + 1)
                 const newRangeEnd = dayjs(date).add(1, 'day')
-                setData((prev) => ({ ...prev, endDate: newRangeEnd.format('YYYY-MM-DD'), duration: duration + 1, amount: price * duration }))
+                setSelection({ endDate: newRangeEnd.format('YYYY-MM-DD'), duration: duration + 1, amount: price * duration })
             } else {
                 setDuration(() => duration)
-                setData((prev) => ({ ...prev, endDate: date.format('YYYY-MM-DD'), duration: duration, amount: price * duration }))
+                setSelection({ endDate: date.format('YYYY-MM-DD'), duration: duration, amount: price * duration })
             }
 
         }
         else {
             setRange(() => ({ rangeStart: null, rangeEnd: null }))
-            setData((prev) => ({ ...prev, startDate: undefined, endDate: undefined }))
+            setSelection({ startDate: 'none', endDate: 'none' })
         }
     }
 

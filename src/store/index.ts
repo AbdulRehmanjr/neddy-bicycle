@@ -1,24 +1,47 @@
-import { atomWithStorage } from 'jotai/utils';
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
-const selectionInital: SelectionProps = {
-    startDate: undefined,
-    endDate: undefined,
-    location: undefined,
-    duration: 0,
-    men: 0,
-    ladies: 0,
-    kids: 0,
-    amount:0,
-    firstName:'',
-    lastName:'',
-    email:'',
-    phone:'',
-    guesthouse:'',
-    arrivalTime:'',
-    additional:'',
-    info:'',
+
+interface BookingStore {
+  bookingId: string
+  selection: SelectionProps
+  trigger: boolean
+  setBookingId: (id: string) => void
+  setSelection: (selection: Partial<SelectionProps>) => void
+  setTrigger: (trigger: boolean) => void
 }
 
-export const bookingId = atomWithStorage<string>('neddyBookingAtom','')
-export const selectionAtom = atomWithStorage<SelectionProps>('neddySelectionAtom', selectionInital)
-export const triggerAtom = atomWithStorage<boolean>('neddyTriggerAtom', false)
+const selectionInitial: SelectionProps = {
+  startDate: undefined,
+  endDate: undefined,
+  location: undefined,
+  duration: 0,
+  men: 0,
+  ladies: 0,
+  kids: 0,
+  amount: 0,
+  firstName: 'none',
+  lastName: 'none',
+  email: 'none',
+  phone: 'none',
+  guesthouse: 'none',
+  arrivalTime: 'none',
+  additional: 'none',
+  info: 'none',
+}
+
+export const useBookingStore = create<BookingStore>()(
+  persist(
+    (set) => ({
+      bookingId: '',
+      selection: selectionInitial,
+      trigger: false,
+      setBookingId: (id) => set({ bookingId: id }),
+      setSelection: (newSelection) => set((state) => ({ selection: { ...state.selection, ...newSelection } })),
+      setTrigger: (newTrigger) => set({ trigger: newTrigger }),
+    }),
+    {
+      name: 'neddyBookingStore',
+    }
+  )
+)

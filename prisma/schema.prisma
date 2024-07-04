@@ -20,6 +20,7 @@ model PayPalBoookingInfo {
   payerId          String         @default("none")
   paymentId        String         @default("none")
   contactEmail     String         @default("none")
+  createdAt        DateTime       @default(now())
   BikeBookings     BikeBookings[]
 }
 

@@ -14,9 +14,9 @@ import {
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
-import { useSetAtom } from "jotai/react";
-import { bookingId, selectionAtom, triggerAtom } from "~/store";
 import { Textarea } from "~/components/ui/textarea";
+import { useBookingStore } from "~/store";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   firstName: z.string({ required_error: "Field is required." }),
@@ -31,10 +31,8 @@ const formSchema = z.object({
 
 export const BookingForm = () => {
 
-
-  const setBookingData = useSetAtom(selectionAtom);
-  const setTrigger = useSetAtom(triggerAtom);
-  const setBookingId = useSetAtom(bookingId);
+  const router  = useRouter()
+  const {setSelection,setBookingId,setTrigger} = useBookingStore()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,21 +41,21 @@ export const BookingForm = () => {
   const createOrder = api.booking.createPayPalBooking.useMutation({
     onSuccess: (data: string) => {
       setTrigger(false);
-      setBookingId(() => data);
-      window.location.reload();
+      setBookingId(data);
+      form.reset();
+      router.push('/booking/payment')
     },
   });
 
   const formSubmitted = (data: z.infer<typeof formSchema>) => {
-    setBookingData((prev) => ({
-      ...prev,
+    setSelection({
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       phone: data.phone,
       additional: data.additional ?? "none",
       info: data.info ?? "none",
-    }));
+    });
     createOrder.mutate({ email: data.email });
   };
 

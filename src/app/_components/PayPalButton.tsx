@@ -4,11 +4,9 @@
 "use client";
 
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import { useAtom, useAtomValue } from "jotai";
 import { type OnApproveData, type CreateOrderData } from "@paypal/paypal-js";
 import { useRouter } from "next/navigation";
-import { bookingId, selectionAtom, triggerAtom } from "~/store";
-import { useMemo, useState } from "react";
+import { useBookingStore } from "~/store";
 import { clearLocalStorage } from "~/utils";
 import { api } from "~/trpc/react";
 import axios, { AxiosError } from "axios";
@@ -17,27 +15,18 @@ import { useToast } from "~/components/ui/use-toast";
 export const PayPalButton = () => {
   const { toast } = useToast();
   const router = useRouter();
-  const bookingData = useAtomValue(selectionAtom);
-  const paypalId = useAtomValue(bookingId);
-  const [isDisabled, setDisabled] = useAtom(triggerAtom);
-  const [isReady, setIsReady] = useState(false);
+  const { selection, bookingId, trigger, setTrigger } = useBookingStore();
 
   const emailSender = api.email.buyerMail.useMutation();
   const sellerEmail = api.email.sellerMail.useMutation();
 
-  useMemo(() => {
-    if (bookingData.amount && paypalId != "") setIsReady(() => true);
-  }, [bookingData, paypalId]);
-
   const createOrder = async (_data: CreateOrderData) => {
     try {
-
       const response = await axios.post("/api/order", {
-        paypal: paypalId,
-        amount: bookingData.amount,
+        paypal: bookingId,
+        amount: selection.amount,
       });
       return response.data.id;
-      
     } catch (error) {
       if (error instanceof AxiosError) {
         console.error(error.message);
@@ -58,34 +47,34 @@ export const PayPalButton = () => {
     try {
       await axios.post("/api/order/capture", {
         orderId: data.orderID,
-        bookingData: bookingData,
+        bookingData: selection,
       });
 
       const emailObject = {
-        firstName: bookingData.firstName,
-        lastName: bookingData.lastName,
-        email: bookingData.email,
-        phone: bookingData.phone,
-        men: bookingData.men,
-        ladies: bookingData.ladies,
-        kids: bookingData.kids,
-        amount: bookingData.amount,
-        duration: bookingData.duration,
-        startDate: bookingData.startDate ?? "",
-        endDate: bookingData.endDate ?? "",
+        firstName: selection.firstName,
+        lastName: selection.lastName,
+        email: selection.email,
+        phone: selection.phone,
+        men: selection.men,
+        ladies: selection.ladies,
+        kids: selection.kids,
+        amount: selection.amount,
+        duration: selection.duration,
+        startDate: selection.startDate ?? "none",
+        endDate: selection.endDate ?? "none",
         orderId: data.orderID,
-        paymentId: data.payerID ?? "",
-        additional: bookingData.additional ?? "",
-        info: bookingData.info ?? "",
-        guesthouse: bookingData.guesthouse ?? "",
-        arrivalTime: bookingData.arrivalTime ?? "",
-        pickup: bookingData.location == 1 ? "Jetty" : "Guesthouse",
+        paymentId: data.payerID ?? "none",
+        additional: selection.additional ?? "none",
+        info: selection.info ?? "none",
+        guesthouse: selection.guesthouse ?? "none",
+        arrivalTime: selection.arrivalTime ?? "none",
+        pickup: selection.location == 1 ? "Jetty" : "Guesthouse",
       };
 
       emailSender.mutate(emailObject);
       sellerEmail.mutate(emailObject);
       clearLocalStorage();
-      setDisabled(true);
+      setTrigger(true);
       router.push("/success");
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -108,7 +97,7 @@ export const PayPalButton = () => {
   };
   return (
     <PayPalButtons
-      disabled={isDisabled || !isReady}
+      disabled={trigger || selection.amount == 0 || bookingId == "none"}
       createOrder={(data, _action) => createOrder(data)}
       onApprove={(data, _actions) => approveOrder(data)}
       onCancel={(data, _action) => cancelOrder(data)}
