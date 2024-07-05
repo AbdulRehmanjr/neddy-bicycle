@@ -26,7 +26,7 @@ export const BikeOptions = () => {
                     <div className="flex justify-center items-center gap-6">
                         <Button
                             className="bg-yellow hover:bg-yellow-hover"
-                            disabled={selection.men == 0}
+                            disabled={selection.men <= 0}
                             onClick={() => setSelection({men: selection.men - 1 })}
                         >
                             <Minus />
@@ -51,7 +51,7 @@ export const BikeOptions = () => {
                     <div className="flex justify-center items-center gap-6">
                         <Button
                             className="bg-yellow hover:bg-yellow-hover"
-                            disabled={selection.ladies == 0}
+                            disabled={selection.ladies <= 0}
                             onClick={() => setSelection({ladies: selection.ladies - 1 })}
                         >
                             <Minus />
@@ -59,7 +59,7 @@ export const BikeOptions = () => {
                         <p className="text-xl">{selection.ladies}</p>
                         <Button
                             className="bg-yellow hover:bg-yellow-hover"
-                            onClick={() => setSelection({ladies: selection.ladies - 1 })}
+                            onClick={() => setSelection({ladies: selection.ladies + 1 })}
                         >
                             <Plus />
                         </Button>
@@ -76,7 +76,7 @@ export const BikeOptions = () => {
                     <div className="flex justify-center items-center gap-6">
                         <Button
                             className="bg-yellow hover:bg-yellow-hover"
-                            disabled={selection.kids == 0}
+                            disabled={selection.kids <= 0}
                             onClick={() => setSelection({kids: selection.kids - 1 })}
                         >
                             <Minus />
@@ -84,7 +84,7 @@ export const BikeOptions = () => {
                         <p className="text-xl">{selection.kids}</p>
                         <Button
                             className="bg-yellow hover:bg-yellow-hover"
-                            onClick={() => setSelection({kids: selection.kids - 1 })}
+                            onClick={() => setSelection({kids: selection.kids + 1 })}
                         >
                             <Plus />
                         </Button>
