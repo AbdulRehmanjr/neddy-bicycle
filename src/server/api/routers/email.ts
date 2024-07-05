@@ -58,7 +58,7 @@ export const EmailRouter = createTRPCRouter({
                 const email: Mail.Options = {
                     from: `${sender}`,
                     to: `${input.email}`,
-                    subject: " Nedy's Bicycle booking confirmation",
+                    subject: "Nedy's Bicycle booking confirmation",
                     html: `  
                     <table
                     style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse; font-family: Arial, sans-serif;">
