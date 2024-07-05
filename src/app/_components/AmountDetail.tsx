@@ -6,8 +6,8 @@ export const AmountDetail = () => {
   const { selection } = useBookingStore();
 
   return (
-    <div className="flex flex-col gap-4 text-yellow">
-      <h1 className="font-ibm text-4xl">Rental overview</h1>
+    <div className="order-1 md:order-2 flex flex-col gap-4 text-yellow">
+      <h1 className="font-ibm text-2xl md:text-4xl">Rental overview</h1>
       <div className="flex flex-col gap-2 text-gray-500">
         <p className="flex gap-2">
           <span>Start date:</span>

@@ -6,7 +6,7 @@ export default function BookingPage() {
 
     return (
         <section className="col-span-12 flex flex-col gap-14 min-h-[calc(100vh_-_124px)] mb-16">
-            <div className="flex flex-col md:flex-row justify-center gap-40 p-6">
+            <div className="flex flex-col md:flex-row justify-center gap-6 p-3 md:gap-40 md:p-6">
                 <BookingForm />
                 <AmountDetail />
             </div>

@@ -63,17 +63,17 @@ export const BookingForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(formSubmitted)}
-        className={`grid grid-cols-2 gap-3  text-mid-blue `}
+        className={`order-2 md:order-1 grid grid-cols-2 gap-3 text-mid-blue `}
       >
-        <h1 className="col-span-2 font-ibm text-4xl text-yellow">
-          Personal Information
+        <h1 className="col-span-2 font-ibm text-2xl md:text-4xl text-yellow">
+          Personal information
         </h1>
         <FormField
           control={form.control}
           name="firstName"
           render={({ field }) => (
             <FormItem className="col-span-2 md:col-span-1">
-              <FormLabel>First Name</FormLabel>
+              <FormLabel>First name</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Enter the first name"
@@ -90,7 +90,7 @@ export const BookingForm = () => {
           name="lastName"
           render={({ field }) => (
             <FormItem className="col-span-2 md:col-span-1">
-              <FormLabel>Last Name</FormLabel>
+              <FormLabel>Last name</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Enter the last name"
