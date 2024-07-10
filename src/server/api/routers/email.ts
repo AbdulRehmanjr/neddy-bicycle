@@ -12,6 +12,7 @@ import type Mail from "nodemailer/lib/mailer";
 import path from "path";
 import { env } from "~/env";
 import { cwd } from "process";
+import dayjs from "dayjs";
 
 export const EmailRouter = createTRPCRouter({
     buyerMail: publicProcedure
@@ -92,11 +93,11 @@ export const EmailRouter = createTRPCRouter({
                             </p>
                             <p>
                                 <span style="font-weight:bold;">Start date: </span>
-                                <span>${input.startDate}</span>
+                                <span>${dayjs(input.startDate).format('DD-MM-YYYY')}</span>
                             </p>
                             <p>
                                 <span style="font-weight:bold;">End date: </span>
-                                <span>${input.endDate}</span>
+                                <span>${dayjs(input.endDate).format('DD-MM-YYYY')}</span>
                             </p>
                             <p>
                             <span style="font-weight:bold;">Pickup: </span>
@@ -254,14 +255,14 @@ export const EmailRouter = createTRPCRouter({
                         <span style="display: block; width: 100%; height: 1px; background-color: #ddd;"></span>
                         <p style="margin-top:10px; margin-bottom:10px;">BOOKING DETAIL</p>
                         <span style="display: block; width: 100%; height: 1px; background-color: #ddd;"></span>
-                        <p>
-                            <span style="font-weight:bold;">Start date: </span>
-                            <span>${input.startDate}</span>
-                        </p>
-                        <p>
-                            <span style="font-weight:bold;">End date: </span>
-                            <span>${input.endDate}</span>
-                        </p>
+                           <p>
+                                <span style="font-weight:bold;">Start date: </span>
+                                <span>${dayjs(input.startDate).format('DD-MM-YYYY')}</span>
+                            </p>
+                            <p>
+                                <span style="font-weight:bold;">End date: </span>
+                                <span>${dayjs(input.endDate).format('DD-MM-YYYY')}</span>
+                            </p>
                         <p>
                             <span style="font-weight:bold;">Duration: </span>
                             <span>${input.duration} days</span>
