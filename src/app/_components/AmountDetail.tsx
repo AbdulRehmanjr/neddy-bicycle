@@ -1,5 +1,6 @@
 "use client";
 
+import dayjs from "dayjs";
 import { useBookingStore } from "~/store";
 
 export const AmountDetail = () => {
@@ -11,15 +12,15 @@ export const AmountDetail = () => {
       <div className="flex flex-col gap-2 text-gray-500">
         <p className="flex gap-2">
           <span>Start date:</span>
-          <span>{selection.startDate}</span>
+          <span>{dayjs(selection.startDate).format('DD-MM-YYYY')}</span>
         </p>
         <p className="flex gap-2">
           <span>End date:</span>
-          <span>{selection.endDate}</span>
+          <span>{dayjs(selection.endDate).format('DD-MM-YYYY')}</span>
         </p>
         <p className="flex gap-2">
           <span>Duration:</span>
-          <span>{selection.duration} days</span>
+          <span>{selection.duration == 1 ?`${selection.duration} day`:`${selection.duration} days`} </span>
         </p>
         <p className="flex gap-2">
           <span>Pickup location:</span>
