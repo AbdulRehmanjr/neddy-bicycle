@@ -13,7 +13,7 @@ export async function POST(req: Request) {
 
     try {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const { orderId, bookingData }: { orderId: string, bookingData: SelectionProps } = await req.json()
+        const { orderId, paypalId,bookingData, }: { orderId: string, paypalId:string,bookingData: SelectionProps } = await req.json()
 
         const username = env.PAYPAL_CLIENT
         const password = env.PAYPAL_SECERT
@@ -42,7 +42,6 @@ export async function POST(req: Request) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const order = response.data
 
-        
         await api.booking.createBooking({
             firstName: bookingData.firstName,
             lastName: bookingData.lastName,
@@ -60,6 +59,7 @@ export async function POST(req: Request) {
             arrivalTime: bookingData.arrivalTime ?? 'none',
             additional: bookingData.additional ?? 'none',
             info: bookingData.info ?? 'none',
+            paypalId:paypalId
         })
 
         const googleToken = await db.calendars.findFirstOrThrow({ where: { platform: 'Neddy' } })

@@ -47,6 +47,7 @@ export const PayPalButton = () => {
     try {
       await axios.post("/api/order/capture", {
         orderId: data.orderID,
+        paypalId:bookingId,
         bookingData: selection,
       });
 

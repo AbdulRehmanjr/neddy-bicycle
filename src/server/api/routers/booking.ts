@@ -25,18 +25,11 @@ export const BookingRouter = createTRPCRouter({
             kids: z.number(),
             pickup: z.number(),
             additional: z.string(),
-            info: z.string()
+            info: z.string(),
+            paypalId: z.string()
         }))
         .mutation(async ({ ctx, input }) => {
             try {
-                const uuid = randomUUID().toString()
-                const payPalBoookingInfo = await ctx.db.payPalBoookingInfo.create({
-                    data: {
-                        captureId: uuid,
-                        contactEmail: input.email,
-                    }
-                })
-
                 await ctx.db.bikeBookings.create({
                     data: {
                         firstName: input.firstName,
@@ -55,12 +48,10 @@ export const BookingRouter = createTRPCRouter({
                         pickup: input.pickup,
                         addtional: input.additional,
                         info: input.info,
-                        payPalId: payPalBoookingInfo.paypalBoookingId
+                        payPalId: input.paypalId
                     }
                 })
-                return payPalBoookingInfo.paypalBoookingId
             } catch (error) {
-
                 if (error instanceof TRPCClientError) {
                     console.error(error.message)
                     throw new Error(error.message)
@@ -70,7 +61,7 @@ export const BookingRouter = createTRPCRouter({
             }
         }),
 
-        createPayPalBooking: publicProcedure
+    createPayPalBooking: publicProcedure
         .input(z.object({ email: z.string() }))
         .mutation(async ({ ctx, input }) => {
             try {
@@ -95,7 +86,6 @@ export const BookingRouter = createTRPCRouter({
     deleteBooking: publicProcedure.input(z.object({ paypalId: z.string() }))
         .mutation(async ({ ctx, input }) => {
             try {
-
                 await ctx.db.payPalBoookingInfo.delete({
                     where: {
                         paypalBoookingId: input.paypalId
