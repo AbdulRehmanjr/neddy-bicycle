@@ -70,7 +70,7 @@ export async function POST(req: Request) {
             auth: authClient,
             requestBody: {
                 summary: `${bookingData.firstName} ${bookingData.lastName}`,
-                description: `\nOrder Id: ${orderId}\nPhone: ${bookingData.phone}\nEmail: ${bookingData.email}\nGuesthouse: ${bookingData.guesthouse}\nArrivalTime: ${bookingData.arrivalTime} Pickup: ${bookingData.location == 1 ? 'Jetty' : 'Guesthouse'}\nPrice: ${bookingData.amount} € \nMen: ${bookingData.men}\nLadies: ${bookingData.ladies}\nKids: ${bookingData.kids}\nDuration: ${bookingData.duration} days\nAdditional information: ${bookingData.additional}`,
+                description: `\nOrder Id: ${orderId}\nPhone: ${bookingData.phone}\nEmail: ${bookingData.email}\nGuesthouse: ${bookingData.guesthouse}\nArrivalTime: ${bookingData.arrivalTime}\nPickup: ${bookingData.location == 1 ? 'Jetty' : 'Guesthouse'}\nPrice: ${bookingData.amount} € \nMen: ${bookingData.men}\nLadies: ${bookingData.ladies}\nKids: ${bookingData.kids}\nDuration: ${bookingData.duration} days\nAdditional information: ${bookingData.additional}`,
                 start: {
                     dateTime: new Date(bookingData.startDate ?? "").toISOString(),
                     timeZone: "Asia/Dubai"
